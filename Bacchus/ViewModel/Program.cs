@@ -16,6 +16,9 @@ namespace Bacchus
         [STAThread]
         static void Main()
         {
+            SQLiteDAO SQLDAO = SQLiteDAO.Instance;
+            SQLDAO.Export_To_Csv(@"C:\Users\kanti\Desktop\TP_NET\test.csv");
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
