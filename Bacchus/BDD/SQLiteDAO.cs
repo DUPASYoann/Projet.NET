@@ -309,7 +309,7 @@ namespace Bacchus.BDD
                                 Resultat = null;
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             Resultat = null;
                         }
@@ -358,7 +358,7 @@ namespace Bacchus.BDD
                                 Resultat = null;
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             Resultat = null;
                         }
@@ -406,7 +406,7 @@ namespace Bacchus.BDD
                                 Resultat = null;
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             Resultat = null;
                         }
@@ -454,7 +454,7 @@ namespace Bacchus.BDD
                                 Resultat = null;
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             Resultat = null;
                         }
