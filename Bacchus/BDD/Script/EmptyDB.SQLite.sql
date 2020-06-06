@@ -1,0 +1,26 @@
+DROP TABLE IF EXISTS "SousFamilles";
+CREATE TABLE IF NOT EXISTS "SousFamilles" (
+	"RefSousFamille"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"RefFamille"	INTEGER NOT NULL,
+	"Nom"	Varchar(50) NOT NULL
+);
+DROP TABLE IF EXISTS "Marques";
+CREATE TABLE IF NOT EXISTS "Marques" (
+	"RefMarque"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"Nom"	Varchar(50) NOT NULL
+);
+DROP TABLE IF EXISTS "Familles";
+CREATE TABLE IF NOT EXISTS "Familles" (
+	"RefFamille"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"Nom"	Varchar(50) NOT NULL
+);
+DROP TABLE IF EXISTS "Articles";
+CREATE TABLE IF NOT EXISTS "Articles" (
+	"RefArticle"	Varchar(8) NOT NULL,
+	"Description"	Varchar(150) NOT NULL,
+	"RefSousFamille"	Int(11) NOT NULL,
+	"RefMarque"	Int(11) NOT NULL,
+	"PrixHT"	float NOT NULL,
+	"Quantite"	Int(11) NOT NULL,
+	PRIMARY KEY("RefArticle")
+);

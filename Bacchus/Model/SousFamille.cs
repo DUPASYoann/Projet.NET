@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bacchus.Model
+{
+    class SousFamille
+    {
+        public SousFamille()
+        {
+        }
+
+        public SousFamille(int refFamille, string nom, int refSousFamille = 0)
+        {
+            RefSousFamille = refSousFamille;
+            RefFamille = refFamille;
+            Nom = nom;
+        }
+
+        public int RefSousFamille { get; set; }
+        public int RefFamille { get; set; }
+        public String Nom { get; set; }
+
+    }
+}
