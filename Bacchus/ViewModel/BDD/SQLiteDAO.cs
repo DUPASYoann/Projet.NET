@@ -61,6 +61,11 @@ namespace Bacchus.BDD
             }
         }
 
+        public void Export_To_Csv(String CSV_Path)
+        {
+
+        }
+
         public void Insert_From_Csv(String CSV_Path)
         {
             String Description;

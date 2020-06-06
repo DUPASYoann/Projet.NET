@@ -66,29 +66,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BDD\SQLiteDAO.cs" />
-    <Compile Include="Forms\FormImporter.cs">
+    <Compile Include="ViewModel\BDD\SQLiteDAO.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="View\FormImporter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormImporter.Designer.cs">
+    <Compile Include="View\FormImporter.Designer.cs">
       <DependentUpon>FormImporter.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormMain.cs">
+    <Compile Include="View\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormMain.Designer.cs">
+    <Compile Include="View\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Article.cs" />
     <Compile Include="Model\Famille.cs" />
     <Compile Include="Model\Marque.cs" />
     <Compile Include="Model\SousFamille.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ViewModel\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\FormImporter.resx">
+    <EmbeddedResource Include="View\FormImporter.resx">
       <DependentUpon>FormImporter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormMain.resx">
+    <EmbeddedResource Include="View\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -119,7 +120,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="BDD\Script\EmptyDB.SQLite.sql">
+    <Content Include="ViewModel\BDD\Script\EmptyDB.SQLite.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
