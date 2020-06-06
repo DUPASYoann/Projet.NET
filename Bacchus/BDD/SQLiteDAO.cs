@@ -22,11 +22,9 @@ namespace Bacchus.BDD
         private static readonly object PadLock = new object();
 
         private String Connection_String = @"Data Source = Bacchus.SQLite;";
-        private SQLiteConnection My_Connection;
 
         SQLiteDAO()
         {
-            My_Connection = new SQLiteConnection(Connection_String);
         }
 
         public static SQLiteDAO Instance
@@ -35,7 +33,7 @@ namespace Bacchus.BDD
             {
                 lock (PadLock)
                 {
-                    if(Instance_priv == null)
+                    if (Instance_priv == null)
                     {
                         Instance_priv = new SQLiteDAO();
                     }
@@ -46,17 +44,20 @@ namespace Bacchus.BDD
 
         public void Empty_DB()
         {
-            try
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
-                My_Connection.Open();
-                string script = File.ReadAllText(@".\BDD\Script\EmptyDB.SQLite.sql");
-                SQLiteCommand sQLiteCommand = new SQLiteCommand(script,My_Connection);
-                sQLiteCommand.ExecuteNonQuery();
-                My_Connection.Close();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("IMPOSSIBLE DE VIDER LA BASE DE DONNEES : " + e.Message);
+                try
+                {
+                    My_Connection.Open();
+                    string script = File.ReadAllText(@".\BDD\Script\EmptyDB.SQLite.sql");
+                    SQLiteCommand sQLiteCommand = new SQLiteCommand(script, My_Connection);
+                    sQLiteCommand.ExecuteNonQuery();
+                    My_Connection.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("IMPOSSIBLE DE VIDER LA BASE DE DONNEES : " + e.Message);
+                }
             }
         }
 
@@ -69,7 +70,7 @@ namespace Bacchus.BDD
             String SousFamille;
             String Prix;
 
-            using (TextFieldParser parser = new TextFieldParser(CSV_Path))
+            using (TextFieldParser parser = new TextFieldParser(CSV_Path, Encoding.Default))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(";");
@@ -85,13 +86,16 @@ namespace Bacchus.BDD
                         SousFamille = fields[4];
                         Prix = fields[5];
 
-                        Insert_Row_From_CSV(Description, Ref_Article, Marque, Famille, SousFamille, Prix);
+                        if (Search_Article_From_Ref(Ref_Article) == null)
+                        {
+                            Insert_Row_From_CSV(Description, Ref_Article, Marque, Famille, SousFamille, Prix);
+                        }
                     }
                 }
             }
         }
 
-        public void Insert_Row_From_CSV(String Description,String Ref_Article, String Marque, String Famille, String SousFamille, String Prix)
+        public void Insert_Row_From_CSV(String Description, String Ref_Article, String Marque, String Famille, String SousFamille, String Prix)
         {
             Article Article_obj = new Article();
             Article_obj.Description = Description;
@@ -117,7 +121,7 @@ namespace Bacchus.BDD
             SousFamille SousFamille_obj = Search_SousFamille_From_Name(SousFamille);
             if (SousFamille_obj == null)
             {
-                SousFamille_obj = new SousFamille(Famille_obj.RefFamille,SousFamille);
+                SousFamille_obj = new SousFamille(Famille_obj.RefFamille, SousFamille);
                 Insert_SousFamille(SousFamille_obj);
                 SousFamille_obj = Search_SousFamille_From_Name(SousFamille_obj.Nom);
             }
@@ -131,83 +135,200 @@ namespace Bacchus.BDD
 
         public void Insert_Article(Article Article_obj)
         {
-            try
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
-                
-                My_Connection.Open();
-                SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(My_Connection);
-                SQLiteCommand_obj.CommandText = @"INSERT INTO Articles VALUES (:RefArticle,:Description,:RefSousFamille,:RefMarque,:PrixHT,:Quantite)";
-                SQLiteCommand_obj.CommandType = CommandType.Text;
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefArticle", Article_obj.RefArticle));
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Description", Article_obj.Description));
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", Article_obj.RefSousFamille));
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefMarque", Article_obj.RefMarque));
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("PrixHT", Article_obj.PrixHT));
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Quantite", Article_obj.Quantite));
-                Debug.Print(SQLiteCommand_obj.CommandText);
-                SQLiteCommand_obj.ExecuteNonQuery();
-                My_Connection.Close();
+                try
+                {
 
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("IMPOSSIBLE D'AJOUTER L'ARTICLE A LA BASE DE DONNEES : " + e.Message);
+                    My_Connection.Open();
+                    using (SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(My_Connection))
+                    {
+                        SQLiteCommand_obj.CommandText = @"INSERT INTO Articles VALUES (:RefArticle,:Description,:RefSousFamille,:RefMarque,:PrixHT,:Quantite)";
+                        SQLiteCommand_obj.CommandType = CommandType.Text;
+                        SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefArticle", Article_obj.RefArticle));
+                        SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Description", Article_obj.Description));
+                        SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", Article_obj.RefSousFamille));
+                        SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefMarque", Article_obj.RefMarque));
+                        SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("PrixHT", Article_obj.PrixHT));
+                        SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Quantite", Article_obj.Quantite));
+                        Debug.Print(SQLiteCommand_obj.CommandText);
+                        SQLiteCommand_obj.ExecuteNonQuery(); 
+                    }
+                    My_Connection.Close();
+
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("IMPOSSIBLE D'AJOUTER L'ARTICLE A LA BASE DE DONNEES : " + e.Message);
+                    Debug.Print(Article_obj.RefArticle);
+                } 
             }
         }
 
         public void Insert_Famille(Famille Famille_obj)
         {
-            try
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
-                My_Connection.Open();
-                String SQL_String = "INSERT INTO Familles (Nom) VALUES(:Nom)";
-                SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", Famille_obj.Nom));
-                SQLiteCommand_obj.ExecuteNonQuery();
-                My_Connection.Close();
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "INSERT INTO Familles (Nom) VALUES(:Nom)";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", Famille_obj.Nom));
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                    My_Connection.Close();
 
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("IMPOSSIBLE D'AJOUTER LA FAMILLE A LA BASE DE DONNEES : " + e.Message);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("IMPOSSIBLE D'AJOUTER LA FAMILLE A LA BASE DE DONNEES : " + e.Message);
+                } 
             }
         }
 
         public void Insert_Marque(Marque Marque_obj)
         {
-            try
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
-                My_Connection.Open();
-                String SQL_String = "INSERT INTO Marques (Nom) VALUES(:Nom)";
-                SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", Marque_obj.Nom));
-                SQLiteCommand_obj.ExecuteNonQuery();
-                My_Connection.Close();
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "INSERT INTO Marques (Nom) VALUES(:Nom)";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", Marque_obj.Nom));
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                    My_Connection.Close();
 
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("IMPOSSIBLE D'AJOUTER LA MARQUE A LA BASE DE DONNEES : " + e.Message);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("IMPOSSIBLE D'AJOUTER LA MARQUE A LA BASE DE DONNEES : " + e.Message);
+                } 
             }
         }
 
         public void Insert_SousFamille(SousFamille SousFamille_obj)
         {
-            try
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
-                My_Connection.Open();
-                String SQL_String = "INSERT INTO SousFamilles (RefFamille,Nom) VALUES(:RefFamille,:Nom)";
-                SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefFamille", SousFamille_obj.RefFamille));
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", SousFamille_obj.Nom));
-                SQLiteCommand_obj.ExecuteNonQuery();
-                My_Connection.Close();
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "INSERT INTO SousFamilles (RefFamille,Nom) VALUES(:RefFamille,:Nom)";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefFamille", SousFamille_obj.RefFamille));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", SousFamille_obj.Nom));
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                    My_Connection.Close();
 
-            }
-            catch (Exception e)
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("IMPOSSIBLE D'AJOUTER LA SOUS FAMILLE A LA BASE DE DONNEES : " + e.Message);
+                }
+
+            }        }
+
+        public List<Article> GetAll_Article()
+        {
+            List<Article> Resultat = new List<Article>();
+
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
-                MessageBox.Show("IMPOSSIBLE D'AJOUTER LA SOUS FAMILLE A LA BASE DE DONNEES : " + e.Message);
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT * FROM Articles";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            SQLiteDataReader_obj.Read();
+                            Article Article_obj = new Article();
+                            Article_obj.RefArticle = SQLiteDataReader_obj.GetString(0);
+                            Article_obj.Description = SQLiteDataReader_obj.GetString(1);
+                            Article_obj.RefSousFamille = SQLiteDataReader_obj.GetInt32(2);
+                            Article_obj.RefMarque = SQLiteDataReader_obj.GetInt32(3);
+                            Article_obj.PrixHT = SQLiteDataReader_obj.GetInt32(4);
+                            Article_obj.Quantite = SQLiteDataReader_obj.GetInt32(5);
+
+                            Resultat.Add(Article_obj);
+                        }
+                        catch (Exception e)
+                        {
+                            Resultat = null;
+                            throw e;
+                        }
+                        finally
+                        {
+                            // always call Close when done reading.
+                            SQLiteDataReader_obj.Close();
+                            // always call Close when done reading.
+                            My_Connection.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES OBJETS: " + e.Message);
+                } 
             }
+
+            return Resultat;
+        }
+
+        public Article Search_Article_From_Ref(String Ref)
+        {
+            Article Resultat = new Article();
+            Resultat.RefArticle = Ref;
+
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT * FROM Articles WHERE RefArticle = :Ref";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Ref", Ref));
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            if (SQLiteDataReader_obj.Read())
+                            {
+                                Resultat.RefArticle = SQLiteDataReader_obj.GetString(0);
+                                Resultat.Description = SQLiteDataReader_obj.GetString(1);
+                                Resultat.RefSousFamille = SQLiteDataReader_obj.GetInt32(2);
+                                Resultat.RefMarque = SQLiteDataReader_obj.GetInt32(3);
+                                Resultat.PrixHT = SQLiteDataReader_obj.GetFloat(4);
+                                Resultat.Quantite = SQLiteDataReader_obj.GetInt32(5);
+                            }
+                            else
+                            {
+                                Resultat = null;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            // always call Close when done reading.
+                            SQLiteDataReader_obj.Close();
+                            // always call Close when done reading.
+                            My_Connection.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECHERCHE DE LA SOUS FAMILLE : " + e.Message);
+                }
+            }
+
+            return Resultat;
         }
 
         public SousFamille Search_SousFamille_From_Name(String Name)
@@ -215,34 +336,45 @@ namespace Bacchus.BDD
             SousFamille Resultat = new SousFamille();
             Resultat.Nom = Name;
 
-            try
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
-                My_Connection.Open();
-                String SQL_String = "SELECT * FROM SousFamilles WHERE Nom = :Name";
-                SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Name", Name));
-                SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader();
                 try
                 {
-                    SQLiteDataReader_obj.Read();
-                    Resultat.RefSousFamille = SQLiteDataReader_obj.GetInt32(0);
-                    Resultat.RefFamille = SQLiteDataReader_obj.GetInt32(1);
+                    My_Connection.Open();
+                    String SQL_String = "SELECT * FROM SousFamilles WHERE Nom = :Name";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Name", Name));
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            if (SQLiteDataReader_obj.Read())
+                            {
+                                Resultat.RefSousFamille = SQLiteDataReader_obj.GetInt32(0);
+                                Resultat.RefFamille = SQLiteDataReader_obj.GetInt32(1);
+                            }
+                            else
+                            {
+                                Resultat = null;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            // always call Close when done reading.
+                            SQLiteDataReader_obj.Close();
+                            // always call Close when done reading.
+                            My_Connection.Close();
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
-                    Resultat = null;
-                }
-                finally
-                {
-                    // always call Close when done reading.
-                    SQLiteDataReader_obj.Close();
-                    // always call Close when done reading.
-                    My_Connection.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("ERREUR DANS LA RECHERCHE DE LA SOUS FAMILLE : " + e.Message);
+                    MessageBox.Show("ERREUR DANS LA RECHERCHE DE LA SOUS FAMILLE : " + e.Message);
+                } 
             }
 
             return Resultat;
@@ -253,33 +385,44 @@ namespace Bacchus.BDD
             Famille Resultat = new Famille();
             Resultat.Nom = Name;
 
-            try
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
-                My_Connection.Open();
-                String SQL_String = "SELECT * FROM Familles WHERE Nom = :Name";
-                SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Name", Name));
-                SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader();
                 try
                 {
-                    SQLiteDataReader_obj.Read();
-                    Resultat.RefFamille = SQLiteDataReader_obj.GetInt32(0);
+                    My_Connection.Open();
+                    String SQL_String = "SELECT * FROM Familles WHERE Nom = :Name";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Name", Name));
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            if (SQLiteDataReader_obj.Read())
+                            {
+                                Resultat.RefFamille = SQLiteDataReader_obj.GetInt32(0);
+                            }
+                            else
+                            {
+                                Resultat = null;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            // always call Close when done reading.
+                            SQLiteDataReader_obj.Close();
+                            // always call Close when done reading.
+                            My_Connection.Close();
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
-                    Resultat = null;
-                }
-                finally
-                {
-                    // always call Close when done reading.
-                    SQLiteDataReader_obj.Close();
-                    // always call Close when done reading.
-                    My_Connection.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("ERREUR DANS LA RECHERCHE DE LA FAMILLE : " + e.Message);
+                    MessageBox.Show("ERREUR DANS LA RECHERCHE DE LA FAMILLE : " + e.Message);
+                } 
             }
 
             return Resultat;
@@ -290,36 +433,47 @@ namespace Bacchus.BDD
             Marque Resultat = new Marque();
             Resultat.Nom = Name;
 
-            try
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
-                My_Connection.Open();
-                String SQL_String = "SELECT * FROM Marques WHERE Nom = :Name";
-                SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
-                SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Name", Name));
-                SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader();
                 try
                 {
-                    SQLiteDataReader_obj.Read();
-                    Resultat.RefMarque = SQLiteDataReader_obj.GetInt32(0);
+                    My_Connection.Open();
+                    String SQL_String = "SELECT * FROM Marques WHERE Nom = :Name";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Name", Name));
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            if (SQLiteDataReader_obj.Read())
+                            {
+                                Resultat.RefMarque = SQLiteDataReader_obj.GetInt32(0);
+                            }
+                            else
+                            {
+                                Resultat = null;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            // always call Close when done reading.
+                            SQLiteDataReader_obj.Close();
+                            // always call Close when done reading.
+                            My_Connection.Close();
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
-                    Resultat = null;
+                    MessageBox.Show("ERREUR DANS LA RECHERCHE DE LA MARQUE : " + e.Message);
                 }
-                finally
-                {
-                    // always call Close when done reading.
-                    SQLiteDataReader_obj.Close();
-                    // always call Close when done reading.
-                    My_Connection.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("ERREUR DANS LA RECHERCHE DE LA MARQUE : " + e.Message);
-            }
 
-            return Resultat;
+                return Resultat;
+            } 
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bacchus.BDD;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,7 +14,6 @@ namespace Bacchus
 {
     public partial class FormImporter : Form
     {
-        private String FileContent = string.Empty;
         private String FilePath = string.Empty;
         private String FileName = string.Empty;
 
@@ -40,15 +40,6 @@ namespace Bacchus
                     //Get file name only
                     //FileName = System.IO.Path.GetFileNameWithoutExtension(FilePath);
                     FileName = System.IO.Path.GetFileName(FilePath);
-
-                    //Read the contents of the file into a stream
-                    var fileStream = OpenFileDialog_obj.OpenFile();
-
-                    using (StreamReader reader = new StreamReader(fileStream))
-                    {
-                        FileContent = reader.ReadToEnd();
-                    }
-
                     this.Label_Fichier.Text = FileName;
                 }
             }
@@ -58,12 +49,15 @@ namespace Bacchus
 
         private void Ajouter_Click(object sender, EventArgs e)
         {
-
+            SQLiteDAO SQLiteDAO_Obj = SQLiteDAO.Instance;
+            SQLiteDAO_Obj.Insert_From_Csv(FilePath);
         }
 
         private void Ecrasement_Click(object sender, EventArgs e)
         {
-
+            SQLiteDAO SQLiteDAO_Obj = SQLiteDAO.Instance;
+            SQLiteDAO_Obj.Empty_DB();
+            SQLiteDAO_Obj.Insert_From_Csv(FilePath);
         }
     }
 }
