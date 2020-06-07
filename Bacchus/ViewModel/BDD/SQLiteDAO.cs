@@ -22,7 +22,7 @@ namespace Bacchus.BDD
         private static SQLiteDAO Instance_priv = null;
         private static readonly object PadLock = new object();
 
-        private String Connection_String = @"Data Source = Bacchus.SQLite;";
+        private readonly String Connection_String = @"Data Source = Bacchus.SQLite;";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -212,10 +212,12 @@ namespace Bacchus.BDD
 
         public void Insert_Row_From_CSV(String Description, String Ref_Article, String Marque, String Famille, String SousFamille, String Prix)
         {
-            Article Article_obj = new Article();
-            Article_obj.Description = Description;
-            Article_obj.RefArticle = Ref_Article;
-            Article_obj.PrixHT = float.Parse(Prix);
+            Article Article_obj = new Article
+            {
+                Description = Description,
+                RefArticle = Ref_Article,
+                PrixHT = float.Parse(Prix)
+            };
 
             Marque Marque_obj = Search_Marque_From_Name(Marque);
             if (Marque_obj == null)
@@ -344,59 +346,12 @@ namespace Bacchus.BDD
 
             }        }
 
-        public List<Article> GetAll_Article()
-        {
-            List<Article> Resultat = new List<Article>();
-
-            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
-            {
-                try
-                {
-                    My_Connection.Open();
-                    String SQL_String = "SELECT * FROM Articles";
-                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
-                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
-                    {
-                        try
-                        {
-                            SQLiteDataReader_obj.Read();
-                            Article Article_obj = new Article();
-                            Article_obj.RefArticle = SQLiteDataReader_obj.GetString(0);
-                            Article_obj.Description = SQLiteDataReader_obj.GetString(1);
-                            Article_obj.RefSousFamille = SQLiteDataReader_obj.GetInt32(2);
-                            Article_obj.RefMarque = SQLiteDataReader_obj.GetInt32(3);
-                            Article_obj.PrixHT = SQLiteDataReader_obj.GetInt32(4);
-                            Article_obj.Quantite = SQLiteDataReader_obj.GetInt32(5);
-
-                            Resultat.Add(Article_obj);
-                        }
-                        catch (Exception e)
-                        {
-                            Resultat = null;
-                            throw e;
-                        }
-                        finally
-                        {
-                            // always call Close when done reading.
-                            SQLiteDataReader_obj.Close();
-                            // always call Close when done reading.
-                            My_Connection.Close();
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES OBJETS: " + e.Message);
-                } 
-            }
-
-            return Resultat;
-        }
-
         public Article Search_Article_From_Ref(String Ref)
         {
-            Article Resultat = new Article();
-            Resultat.RefArticle = Ref;
+            Article Resultat = new Article
+            {
+                RefArticle = Ref
+            };
 
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
@@ -586,9 +541,201 @@ namespace Bacchus.BDD
                 {
                     MessageBox.Show("ERREUR DANS LA RECHERCHE DE LA MARQUE : " + e.Message);
                 }
-
-                return Resultat;
             } 
+            return Resultat;
+        }
+        
+        public List<Article> GetAll_Article()
+        {
+            List<Article> Resultat = new List<Article>();
+
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT * FROM Articles";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            while (SQLiteDataReader_obj.Read())
+                            {
+                                Article Article_obj = new Article();
+                                Article_obj.RefArticle = SQLiteDataReader_obj.GetString(0);
+                                Article_obj.Description = SQLiteDataReader_obj.GetString(1);
+                                Article_obj.RefSousFamille = SQLiteDataReader_obj.GetInt32(2);
+                                Article_obj.RefMarque = SQLiteDataReader_obj.GetInt32(3);
+                                Article_obj.PrixHT = SQLiteDataReader_obj.GetFloat(4);
+                                Article_obj.Quantite = SQLiteDataReader_obj.GetInt32(5);
+
+
+    
+                                Resultat.Add(Article_obj);
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            Resultat = null;
+                            throw e;
+                        }
+                        finally
+                        {
+                            // always call Close when done reading.
+                            SQLiteDataReader_obj.Close();
+                            // always call Close when done reading.
+                            My_Connection.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES OBJETS: " + e.Message);
+                } 
+            }
+
+            return Resultat;
+        }
+
+        public List<Famille> GetAll_Famille()
+        {
+
+            List<Famille> Resultat = new List<Famille>();
+
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT * FROM Familles";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            while (SQLiteDataReader_obj.Read())
+                            {
+                                Famille Famille_Obj = new Famille();
+                                Famille_Obj.RefFamille = SQLiteDataReader_obj.GetInt32(0);
+                                Famille_Obj.Nom = SQLiteDataReader_obj.GetString(1);
+                                Resultat.Add(Famille_Obj);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            SQLiteDataReader_obj.Close();
+                            My_Connection.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES FAMILLES : " + e.Message);
+                }
+                
+            }
+
+            return Resultat;
+
+        }
+        
+        public List<SousFamille> GetAll_SousFamille()
+        {
+
+            List<SousFamille> Resultat = new List<SousFamille>();
+
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT * FROM SousFamilles";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            while (SQLiteDataReader_obj.Read())
+                            {
+                                SousFamille SousFamille_Obj = new SousFamille();
+                                SousFamille_Obj.RefSousFamille = SQLiteDataReader_obj.GetInt32(0);
+                                SousFamille_Obj.RefFamille = SQLiteDataReader_obj.GetInt32(1);
+                                SousFamille_Obj.Nom = SQLiteDataReader_obj.GetString(2);
+                                Resultat.Add(SousFamille_Obj);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            SQLiteDataReader_obj.Close();
+                            My_Connection.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES SOUSFAMILLES : " + e.Message);
+                }
+
+            }
+
+            return Resultat;
+
+        }
+
+        public List<Marque> GetAll_Marque()
+        {
+
+            List<Marque> Resultat = new List<Marque>();
+
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT * FROM Marques";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            while (SQLiteDataReader_obj.Read())
+                            {
+                                Marque Marque_Obj = new Marque();
+                                Marque_Obj.RefMarque = SQLiteDataReader_obj.GetInt32(0);
+                                Marque_Obj.Nom = SQLiteDataReader_obj.GetString(1);
+                                Resultat.Add(Marque_Obj);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            SQLiteDataReader_obj.Close();
+                            My_Connection.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES MARQUES : " + e.Message);
+                }
+
+            }
+
+            return Resultat;
+
         }
 
     }

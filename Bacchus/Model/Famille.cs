@@ -10,16 +10,20 @@ namespace Bacchus.Model
     {
         public Famille()
         {
+            ListesSousFamille = new List<SousFamille>();
         }
 
         public Famille( string nom, int refFamille = 0)
         {
+            ListesSousFamille = new List<SousFamille>();
             RefFamille = refFamille;
             Nom = nom;
         }
 
         public int RefFamille { get; set; }
         public String Nom { get; set; }
+        public List<SousFamille> ListesSousFamille { get; set; }
+
 
     }
 }

@@ -10,15 +10,20 @@ namespace Bacchus.Model
     {
         public Marque()
         {
+            ListeArticle = new List<Article>();
         }
+
 
         public Marque( string nom , int refMarque = 0)
         {
+            ListeArticle = new List<Article>();
             RefMarque = refMarque;
             Nom = nom;
         }
 
         public int RefMarque { get; set; }
         public String Nom { get; set; }
+        public List<Article> ListeArticle { get; set; }
+
     }
 }

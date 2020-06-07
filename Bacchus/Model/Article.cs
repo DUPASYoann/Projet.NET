@@ -28,7 +28,8 @@ namespace Bacchus.Model
         public int RefMarque { get; set; }
         public float PrixHT { get; set; }
         public int Quantite { get; set; }
-
+        public SousFamille SousFamille_Obj { get; set; }
+        public Marque Marque_Obj { get; set; }
 
     }
 }
