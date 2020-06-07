@@ -94,7 +94,64 @@ namespace Bacchus.BDD
 
         public void Export_To_Csv(String CSV_Path)
         {
+            String Description;
+            String Ref_Article;
+            String Marque;
+            String Famille;
+            String SousFamille;
+            float Prix;
+            int Quantite;
+            
 
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT Articles.Description, Articles.RefArticle, Marques.Nom, SousF.FamillesNom, SousF.SousFamillesNom, Articles.PrixHT, Articles.Quantite FROM Articles JOIN Marques ON Articles.RefMarque = Marques.RefMarque JOIN (SELECT SousFamilles.Nom AS 'SousFamillesNom', SousFamilles.RefSousFamille, Familles.Nom AS 'FamillesNom' FROM Familles JOIN SousFamilles ON Familles.RefFamille = SousFamilles.RefFamille) AS 'SousF' ON SousF.RefSousFamille = Articles.RefSousFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        using (System.IO.StreamWriter file = new System.IO.StreamWriter(CSV_Path, false, Encoding.UTF8))
+                        {
+                            try
+                            {
+                                file.WriteLine("Description; Ref; Marque; Famille; Sous - Famille; Prix H.T.; Quantite");
+                            
+                                while (SQLiteDataReader_obj.Read())
+                                {
+                                    Description = SQLiteDataReader_obj.GetString(0);
+                                    Ref_Article = SQLiteDataReader_obj.GetString(1);
+                                    Marque = SQLiteDataReader_obj.GetString(2);
+                                    Famille = SQLiteDataReader_obj.GetString(3);
+                                    SousFamille = SQLiteDataReader_obj.GetString(4);
+                                    Prix = SQLiteDataReader_obj.GetFloat(5);
+                                    Quantite = SQLiteDataReader_obj.GetInt32(6);
+                                    file.WriteLine(Description + ";" + Ref_Article + ";" + Marque + ";" + Famille + ";" + SousFamille + ";" + Prix +";"+ Quantite );
+                                }
+
+                            }
+                            catch (Exception e)
+                            {
+                                throw e;
+                            }
+                            finally
+                            {
+                                file.Close();
+                                // always call Close when done reading.
+                                SQLiteDataReader_obj.Close();
+                                // always call Close when done reading.
+                                My_Connection.Close();
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES OBJETS EXPORT: " + e.Message);
+                }
+            }
         }
 
         public void Insert_From_Csv(String CSV_Path)
