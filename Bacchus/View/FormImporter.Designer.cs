@@ -63,7 +63,7 @@
             // 
             this.Button_Ajout.Location = new System.Drawing.Point(13, 71);
             this.Button_Ajout.Name = "Button_Ajout";
-            this.Button_Ajout.Size = new System.Drawing.Size(75, 23);
+            this.Button_Ajout.Size = new System.Drawing.Size(102, 23);
             this.Button_Ajout.TabIndex = 6;
             this.Button_Ajout.Text = "Ajout";
             this.Button_Ajout.UseVisualStyleBackColor = true;
@@ -71,9 +71,9 @@
             // 
             // Button_Ecrasement
             // 
-            this.Button_Ecrasement.Location = new System.Drawing.Point(96, 71);
+            this.Button_Ecrasement.Location = new System.Drawing.Point(121, 71);
             this.Button_Ecrasement.Name = "Button_Ecrasement";
-            this.Button_Ecrasement.Size = new System.Drawing.Size(75, 23);
+            this.Button_Ecrasement.Size = new System.Drawing.Size(102, 23);
             this.Button_Ecrasement.TabIndex = 7;
             this.Button_Ecrasement.Text = "Ecrasement";
             this.Button_Ecrasement.UseVisualStyleBackColor = true;
@@ -87,18 +87,16 @@
             this.ProgressBar.Name = "ProgressBar";
             this.ProgressBar.Size = new System.Drawing.Size(211, 23);
             this.ProgressBar.TabIndex = 2;
-            this.ProgressBar.Click += new System.EventHandler(this.ProgressBar_Click);
             // 
             // sQLiteDAOBindingSource
             // 
             this.sQLiteDAOBindingSource.DataSource = typeof(Bacchus.BDD.SQLiteDAO);
-            this.sQLiteDAOBindingSource.CurrentChanged += new System.EventHandler(this.sQLiteDAOBindingSource_CurrentChanged);
             // 
             // FormImporter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(290, 142);
+            this.ClientSize = new System.Drawing.Size(236, 111);
             this.Controls.Add(this.Button_Ecrasement);
             this.Controls.Add(this.Button_Ajout);
             this.Controls.Add(this.Label_Fichier);

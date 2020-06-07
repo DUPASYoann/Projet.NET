@@ -69,7 +69,7 @@ namespace Bacchus.BDD
         {
             if (PropertyName != null)
             {
-                PropertyChanged(Instance_priv, new PropertyChangedEventArgs(PropertyName));
+                PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
             }
         }
 
@@ -156,6 +156,8 @@ namespace Bacchus.BDD
 
         public void Insert_From_Csv(String CSV_Path)
         {
+            this.Value_priv = 0;
+            this.Maximum_priv = 0;
             int Nb_Ligne = 0;
             String Description;
             String Ref_Article;

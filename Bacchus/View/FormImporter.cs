@@ -50,6 +50,7 @@ namespace Bacchus
                 sQLiteDAOBindingSource.DataSource = SQLiteDAO_Obj;
 
                 SQLiteDAO_Obj.Insert_From_Csv(FilePath);
+                MessageBox.Show("Nombre de ligne ajouter à  la BDD : " + SQLiteDAO_Obj.Value);
             }
         }
 
@@ -66,6 +67,7 @@ namespace Bacchus
 
                 SQLiteDAO_Obj.Empty_DB();
                 SQLiteDAO_Obj.Insert_From_Csv(FilePath);
+                MessageBox.Show("Nombre de ligne ajouter à  la BDD : " + SQLiteDAO_Obj.Value);
             }
         }
 

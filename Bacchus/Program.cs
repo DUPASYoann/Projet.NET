@@ -16,7 +16,6 @@ namespace Bacchus
         [STAThread]
         static void Main()
         {
-            SQLiteDAO sQLiteDAO = SQLiteDAO.Instance;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
