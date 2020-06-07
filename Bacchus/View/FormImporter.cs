@@ -1,13 +1,5 @@
 ﻿using Bacchus.BDD;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Bacchus
@@ -43,21 +35,48 @@ namespace Bacchus
                     this.Label_Fichier.Text = FileName;
                 }
             }
-
             
         }
 
         private void Ajouter_Click(object sender, EventArgs e)
         {
-            SQLiteDAO SQLiteDAO_Obj = SQLiteDAO.Instance;
-            SQLiteDAO_Obj.Insert_From_Csv(FilePath);
+            if (FilePath == String.Empty)
+            {
+                MessageBox.Show("Veuillez selectionnez un fichier .csv");
+            }
+            else
+            {
+                SQLiteDAO SQLiteDAO_Obj = SQLiteDAO.Instance;
+                sQLiteDAOBindingSource.DataSource = SQLiteDAO_Obj;
+
+                SQLiteDAO_Obj.Insert_From_Csv(FilePath);
+            }
         }
 
         private void Ecrasement_Click(object sender, EventArgs e)
         {
-            SQLiteDAO SQLiteDAO_Obj = SQLiteDAO.Instance;
-            SQLiteDAO_Obj.Empty_DB();
-            SQLiteDAO_Obj.Insert_From_Csv(FilePath);
+            if (FilePath == String.Empty)
+            {
+                MessageBox.Show("Veuillez selectionnez un fichier .csv");
+            }
+            else
+            {
+                SQLiteDAO SQLiteDAO_Obj = SQLiteDAO.Instance;
+                sQLiteDAOBindingSource.DataSource = SQLiteDAO_Obj;
+
+                SQLiteDAO_Obj.Empty_DB();
+                SQLiteDAO_Obj.Insert_From_Csv(FilePath);
+            }
+        }
+
+        private void ProgressBar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sQLiteDAOBindingSource_CurrentChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

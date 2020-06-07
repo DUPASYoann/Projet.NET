@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.Button_Selection = new System.Windows.Forms.Button();
-            this.ProgressBar = new System.Windows.Forms.ProgressBar();
             this.Label_Fichier = new System.Windows.Forms.Label();
             this.Button_Ajout = new System.Windows.Forms.Button();
             this.Button_Ecrasement = new System.Windows.Forms.Button();
+            this.ProgressBar = new System.Windows.Forms.ProgressBar();
+            this.sQLiteDAOBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.sQLiteDAOBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // Button_Selection
@@ -44,13 +47,6 @@
             this.Button_Selection.Text = "Select csv";
             this.Button_Selection.UseVisualStyleBackColor = true;
             this.Button_Selection.Click += new System.EventHandler(this.Importer_Click);
-            // 
-            // ProgressBar
-            // 
-            this.ProgressBar.Location = new System.Drawing.Point(12, 41);
-            this.ProgressBar.Name = "ProgressBar";
-            this.ProgressBar.Size = new System.Drawing.Size(211, 23);
-            this.ProgressBar.TabIndex = 2;
             // 
             // Label_Fichier
             // 
@@ -83,6 +79,21 @@
             this.Button_Ecrasement.UseVisualStyleBackColor = true;
             this.Button_Ecrasement.Click += new System.EventHandler(this.Ecrasement_Click);
             // 
+            // ProgressBar
+            // 
+            this.ProgressBar.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.sQLiteDAOBindingSource, "Value", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged, "5"));
+            this.ProgressBar.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", this.sQLiteDAOBindingSource, "Maximum", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged, "100"));
+            this.ProgressBar.Location = new System.Drawing.Point(12, 41);
+            this.ProgressBar.Name = "ProgressBar";
+            this.ProgressBar.Size = new System.Drawing.Size(211, 23);
+            this.ProgressBar.TabIndex = 2;
+            this.ProgressBar.Click += new System.EventHandler(this.ProgressBar_Click);
+            // 
+            // sQLiteDAOBindingSource
+            // 
+            this.sQLiteDAOBindingSource.DataSource = typeof(Bacchus.BDD.SQLiteDAO);
+            this.sQLiteDAOBindingSource.CurrentChanged += new System.EventHandler(this.sQLiteDAOBindingSource_CurrentChanged);
+            // 
             // FormImporter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -95,6 +106,7 @@
             this.Controls.Add(this.Button_Selection);
             this.Name = "FormImporter";
             this.Text = "FormImporter";
+            ((System.ComponentModel.ISupportInitialize)(this.sQLiteDAOBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -106,5 +118,6 @@
         private System.Windows.Forms.Label Label_Fichier;
         private System.Windows.Forms.Button Button_Ajout;
         private System.Windows.Forms.Button Button_Ecrasement;
+        private System.Windows.Forms.BindingSource sQLiteDAOBindingSource;
     }
 }

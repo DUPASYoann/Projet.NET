@@ -2,6 +2,7 @@
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SQLite;
@@ -15,13 +16,35 @@ using System.Windows.Forms;
 
 namespace Bacchus.BDD
 {
-    sealed class SQLiteDAO
+    sealed class SQLiteDAO : INotifyPropertyChanged
     {
 
         private static SQLiteDAO Instance_priv = null;
         private static readonly object PadLock = new object();
 
         private String Connection_String = @"Data Source = Bacchus.SQLite;";
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private int Value_priv;
+        public int Value
+        {
+            get { return Value_priv; }
+            set { 
+                Value_priv = value;
+                OnPropertyChanged("Value");
+            }
+        }
+
+        private int Maximum_priv;
+        public int Maximum
+        {
+            get { return Maximum_priv; }
+            set { 
+                Maximum_priv = value;
+                OnPropertyChanged("Maximum");
+            }
+        }
 
         SQLiteDAO()
         {
@@ -42,6 +65,14 @@ namespace Bacchus.BDD
             }
         }
 
+        private void OnPropertyChanged(string PropertyName)
+        {
+            if (PropertyName != null)
+            {
+                PropertyChanged(Instance_priv, new PropertyChangedEventArgs(PropertyName));
+            }
+        }
+
         public void Empty_DB()
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
@@ -49,7 +80,7 @@ namespace Bacchus.BDD
                 try
                 {
                     My_Connection.Open();
-                    string script = File.ReadAllText(@".\BDD\Script\EmptyDB.SQLite.sql");
+                    string script = File.ReadAllText(@".\ViewModel\BDD\Script\EmptyDB.SQLite.sql");
                     SQLiteCommand sQLiteCommand = new SQLiteCommand(script, My_Connection);
                     sQLiteCommand.ExecuteNonQuery();
                     My_Connection.Close();
@@ -68,6 +99,7 @@ namespace Bacchus.BDD
 
         public void Insert_From_Csv(String CSV_Path)
         {
+            int Nb_Ligne = 0;
             String Description;
             String Ref_Article;
             String Marque;
@@ -79,6 +111,23 @@ namespace Bacchus.BDD
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(";");
+
+                while (!parser.EndOfData)
+                {
+                    Nb_Ligne++;
+                    parser.ReadLine();
+                }
+
+                Maximum = Nb_Ligne;
+            }
+
+            using (TextFieldParser parser = new TextFieldParser(CSV_Path, Encoding.Default))
+            {
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(";");
+
+                Nb_Ligne = 1;
+
                 while (!parser.EndOfData)
                 {
                     string[] fields = parser.ReadFields();
@@ -93,6 +142,8 @@ namespace Bacchus.BDD
 
                         if (Search_Article_From_Ref(Ref_Article) == null)
                         {
+                            Nb_Ligne++;
+                            Value = Nb_Ligne;
                             Insert_Row_From_CSV(Description, Ref_Article, Marque, Famille, SousFamille, Prix);
                         }
                     }
