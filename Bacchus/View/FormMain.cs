@@ -179,7 +179,7 @@ namespace Bacchus
             }
         }
 
-        private void listView1_KeyDown(object sender, KeyEventArgs e)
+        private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
