@@ -744,5 +744,10 @@ namespace Bacchus.BDD
             return null;
         }
 
+        public List<Article> GetAll_Article_From_Marque(Marque Marque_Obj)
+        {
+            return null;
+        }
+
     }
 }
