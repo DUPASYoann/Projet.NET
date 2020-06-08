@@ -63,5 +63,15 @@ namespace Bacchus.ViewModel
                 }
             }
         }
+
+        public void LoadArticleFromSource(Marque Marque_Obj)
+        {
+
+        }
+
+        public void LoadArticleFromSource(SousFamille SousFamille_Obj)
+        {
+
+        }
     }
 }

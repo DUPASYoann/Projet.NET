@@ -738,5 +738,11 @@ namespace Bacchus.BDD
 
         }
 
+        public List<Article> GetAll_Article_From_SousFamille(SousFamille SousFamille_Obj)
+        {
+
+            return null;
+        }
+
     }
 }

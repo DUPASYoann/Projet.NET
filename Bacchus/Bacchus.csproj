@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModel\ModelManager.cs" />
     <Compile Include="ViewModel\BDD\SQLiteDAO.cs" />
     <Compile Include="View\FormImporter.cs">
       <SubType>Form</SubType>

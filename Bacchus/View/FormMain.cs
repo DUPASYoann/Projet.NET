@@ -17,22 +17,13 @@ namespace Bacchus
     public partial class FormMain : Form
     {
         private ModelManager ModelManager_obj;
+        private List<ListViewGroup> ListViewGroupDescription;
 
         public FormMain()
         {
-            InitializeComponent();
             ModelManager_obj = new ModelManager();
+            InitializeComponent();
             LoadTreeView();
-
-        }
-
-        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
-        {
 
         }
 
@@ -198,6 +189,11 @@ namespace Bacchus
                 default:
                     break;
             }
+        }
+
+        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+
         }
     }
 }

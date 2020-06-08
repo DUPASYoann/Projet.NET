@@ -31,6 +31,10 @@
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode(" Tous les articles");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Familles");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Marques");
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "test",
             "test",
@@ -152,15 +156,30 @@
             this.columnHeader4,
             this.columnHeader5});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            listViewGroup1.Header = "ListViewGroup";
+            listViewGroup1.Name = "Description";
+            listViewGroup2.Header = "ListViewGroup";
+            listViewGroup2.Name = "Familles";
+            listViewGroup3.Header = "ListViewGroup";
+            listViewGroup3.Name = "Sous-Familles";
+            listViewGroup4.Header = "ListViewGroup";
+            listViewGroup4.Name = "Marque";
+            this.listView1.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3,
+            listViewGroup4});
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(530, 404);
+            this.listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
             // 
             // columnHeader1
             // 
