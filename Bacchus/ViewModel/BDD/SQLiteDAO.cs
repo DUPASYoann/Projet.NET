@@ -740,13 +740,100 @@ namespace Bacchus.BDD
 
         public List<Article> GetAll_Article_From_SousFamille(SousFamille SousFamille_Obj)
         {
+            List<Article> Resultat = new List<Article>();
 
-            return null;
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT Articles.RefArticle, Articles.Description, Articles.RefSousFamille, Articles.RefMarque, Articles.PrixHT, Articles.Quantite FROM Articles WHERE Articles.RefSousFamille = :RefSousFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", SousFamille_Obj.RefSousFamille));
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            while (SQLiteDataReader_obj.Read())
+                            {
+                                Article Article_Obj = new Article();
+                                Article_Obj.RefArticle = SQLiteDataReader_obj.GetString(0);
+                                Article_Obj.Description = SQLiteDataReader_obj.GetString(1);
+                                Article_Obj.RefSousFamille = SQLiteDataReader_obj.GetInt32(2);
+                                Article_Obj.RefMarque = SQLiteDataReader_obj.GetInt32(3);
+                                Article_Obj.PrixHT = SQLiteDataReader_obj.GetFloat(4);
+                                Article_Obj.Quantite = SQLiteDataReader_obj.GetInt32(5);
+                                Resultat.Add(Article_Obj);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            SQLiteDataReader_obj.Close();
+                            My_Connection.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES ARTICLES DE LA SOUS FAMILLES : " + e.Message);
+                }
+
+            }
+
+            return Resultat;
         }
 
         public List<Article> GetAll_Article_From_Marque(Marque Marque_Obj)
         {
-            return null;
+            List<Article> Resultat = new List<Article>();
+
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT Articles.RefArticle, Articles.Description, Articles.RefSousFamille, Articles.RefMarque, Articles.PrixHT, Articles.Quantite FROM Articles WHERE Articles.RefMarque = :RefMarque";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefMarque", Marque_Obj.RefMarque));
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            while (SQLiteDataReader_obj.Read())
+                            {
+                                Article Article_Obj = new Article();
+                                Article_Obj.RefArticle = SQLiteDataReader_obj.GetString(0);
+                                Article_Obj.Description = SQLiteDataReader_obj.GetString(1);
+                                Article_Obj.RefSousFamille = SQLiteDataReader_obj.GetInt32(2);
+                                Article_Obj.RefMarque = SQLiteDataReader_obj.GetInt32(3);
+                                Article_Obj.PrixHT = SQLiteDataReader_obj.GetFloat(4);
+                                Article_Obj.Quantite = SQLiteDataReader_obj.GetInt32(5);
+                                Resultat.Add(Article_Obj);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            SQLiteDataReader_obj.Close();
+                            My_Connection.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES ARTICLES DE LA MARQUE : " + e.Message);
+                }
+
+            }
+
+            return Resultat;
         }
 
     }
