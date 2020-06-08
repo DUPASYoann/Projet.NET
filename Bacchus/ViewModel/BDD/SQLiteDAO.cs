@@ -836,5 +836,157 @@ namespace Bacchus.BDD
             return Resultat;
         }
 
+        public void Update_Article(Article Article_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "UPDATE Articles SET Articles.Description = :Description, Articles.PrixHT = :PrixHT, Articles.Quantite = :Quantite, Articles.RefMarque = :RefMarque, Articles.RefSousFamille = :RefSousFamille WHERE Articles.RefArticle = :RefArticle";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Description", Article_obj.Description));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("PrixHT", Article_obj.PrixHT));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Quantite", Article_obj.Quantite));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefMarque", Article_obj.RefMarque));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", Article_obj.RefSousFamille));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA MODIFICATION D'UN ARTICLE : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+
+        public void Update_SousFamille(SousFamille SousFamille_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "UPDATE SousFamilles SET SousFamilles.Nom = :Nom, SousFamilles.RefFamille = :RefFamille WHERE SousFamilles.RefSousFamille = :RefSousFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", SousFamille_obj.Nom));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefFamille", SousFamille_obj.RefFamille));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", SousFamille_obj.RefSousFamille));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA MODIFICATION D'UNE SOUS FAMILLE : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+
+        public void Update_Famille(Famille Famille_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "UPDATE Familles SET Familles.Nom = :Nom WHERE Familles.RefFamille = :RefFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", Famille_obj.Nom));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefFamille", Famille_obj.RefFamille));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA MODIFICATION D'UNE FAMILLE : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+
+        public void Delete_Famille(Famille Famille_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "DELETE FROM Familles WHERE RefFamille = :RefFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefFamille", Famille_obj.RefFamille));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA SUPPRESSION D'UNE FAMILLE : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+
+        public void Delete_Article(Article Article_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "DELETE FROM Articles WHERE RefArticle = :RefArticle";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefArticle", Article_obj.RefArticle));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA SUPPRESSION D'UN ARTICLE : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+        public void Delete_SousFamille(SousFamille SousFamille_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "DELETE FROM SousFamilles WHERE RefSousFamille = :RefSousFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", SousFamille_obj.RefSousFamille));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA SUPPRESSION D'UNE SOUS FAMILLES : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+
     }
 }
+
+
