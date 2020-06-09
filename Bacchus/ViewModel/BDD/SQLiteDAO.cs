@@ -740,14 +740,253 @@ namespace Bacchus.BDD
 
         public List<Article> GetAll_Article_From_SousFamille(SousFamille SousFamille_Obj)
         {
+            List<Article> Resultat = new List<Article>();
 
-            return null;
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT Articles.RefArticle, Articles.Description, Articles.RefSousFamille, Articles.RefMarque, Articles.PrixHT, Articles.Quantite FROM Articles WHERE Articles.RefSousFamille = :RefSousFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", SousFamille_Obj.RefSousFamille));
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            while (SQLiteDataReader_obj.Read())
+                            {
+                                Article Article_Obj = new Article();
+                                Article_Obj.RefArticle = SQLiteDataReader_obj.GetString(0);
+                                Article_Obj.Description = SQLiteDataReader_obj.GetString(1);
+                                Article_Obj.RefSousFamille = SQLiteDataReader_obj.GetInt32(2);
+                                Article_Obj.RefMarque = SQLiteDataReader_obj.GetInt32(3);
+                                Article_Obj.PrixHT = SQLiteDataReader_obj.GetFloat(4);
+                                Article_Obj.Quantite = SQLiteDataReader_obj.GetInt32(5);
+                                Resultat.Add(Article_Obj);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            SQLiteDataReader_obj.Close();
+                            My_Connection.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES ARTICLES DE LA SOUS FAMILLES : " + e.Message);
+                }
+
+            }
+
+            return Resultat;
         }
 
         public List<Article> GetAll_Article_From_Marque(Marque Marque_Obj)
         {
-            return null;
+            List<Article> Resultat = new List<Article>();
+
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "SELECT Articles.RefArticle, Articles.Description, Articles.RefSousFamille, Articles.RefMarque, Articles.PrixHT, Articles.Quantite FROM Articles WHERE Articles.RefMarque = :RefMarque";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefMarque", Marque_Obj.RefMarque));
+                    using (SQLiteDataReader SQLiteDataReader_obj = SQLiteCommand_obj.ExecuteReader())
+                    {
+                        try
+                        {
+                            while (SQLiteDataReader_obj.Read())
+                            {
+                                Article Article_Obj = new Article();
+                                Article_Obj.RefArticle = SQLiteDataReader_obj.GetString(0);
+                                Article_Obj.Description = SQLiteDataReader_obj.GetString(1);
+                                Article_Obj.RefSousFamille = SQLiteDataReader_obj.GetInt32(2);
+                                Article_Obj.RefMarque = SQLiteDataReader_obj.GetInt32(3);
+                                Article_Obj.PrixHT = SQLiteDataReader_obj.GetFloat(4);
+                                Article_Obj.Quantite = SQLiteDataReader_obj.GetInt32(5);
+                                Resultat.Add(Article_Obj);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            Resultat = null;
+                        }
+                        finally
+                        {
+                            SQLiteDataReader_obj.Close();
+                            My_Connection.Close();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES ARTICLES DE LA MARQUE : " + e.Message);
+                }
+
+            }
+
+            return Resultat;
+        }
+
+        public void Update_Article(Article Article_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "UPDATE Articles SET Articles.Description = :Description, Articles.PrixHT = :PrixHT, Articles.Quantite = :Quantite, Articles.RefMarque = :RefMarque, Articles.RefSousFamille = :RefSousFamille WHERE Articles.RefArticle = :RefArticle";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Description", Article_obj.Description));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("PrixHT", Article_obj.PrixHT));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Quantite", Article_obj.Quantite));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefMarque", Article_obj.RefMarque));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", Article_obj.RefSousFamille));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA MODIFICATION D'UN ARTICLE : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+
+        public void Update_SousFamille(SousFamille SousFamille_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "UPDATE SousFamilles SET SousFamilles.Nom = :Nom, SousFamilles.RefFamille = :RefFamille WHERE SousFamilles.RefSousFamille = :RefSousFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", SousFamille_obj.Nom));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefFamille", SousFamille_obj.RefFamille));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", SousFamille_obj.RefSousFamille));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA MODIFICATION D'UNE SOUS FAMILLE : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+
+        public void Update_Famille(Famille Famille_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "UPDATE Familles SET Familles.Nom = :Nom WHERE Familles.RefFamille = :RefFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", Famille_obj.Nom));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefFamille", Famille_obj.RefFamille));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA MODIFICATION D'UNE FAMILLE : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+
+        public void Delete_Famille(Famille Famille_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "DELETE FROM Familles WHERE RefFamille = :RefFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefFamille", Famille_obj.RefFamille));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA SUPPRESSION D'UNE FAMILLE : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+
+        public void Delete_Article(Article Article_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "DELETE FROM Articles WHERE RefArticle = :RefArticle";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefArticle", Article_obj.RefArticle));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA SUPPRESSION D'UN ARTICLE : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
+        }
+        public void Delete_SousFamille(SousFamille SousFamille_obj)
+        {
+            using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
+            {
+                try
+                {
+                    My_Connection.Open();
+                    String SQL_String = "DELETE FROM SousFamilles WHERE RefSousFamille = :RefSousFamille";
+                    SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", SousFamille_obj.RefSousFamille));
+
+                    SQLiteCommand_obj.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERREUR DANS LA SUPPRESSION D'UNE SOUS FAMILLES : " + e.Message);
+                }
+                finally
+                {
+                    My_Connection.Close();
+                }
+            }
         }
 
     }
 }
+
+
