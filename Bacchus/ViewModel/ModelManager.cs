@@ -66,12 +66,15 @@ namespace Bacchus.ViewModel
 
         public void LoadArticleFromSource(Marque Marque_Obj)
         {
-
+            List<Article> ListeArticles = SQLiteDAO.Instance.GetAll_Article_From_Marque(Marque_Obj);
+            ConnectArticles();
+           
         }
 
         public void LoadArticleFromSource(SousFamille SousFamille_Obj)
         {
-
+            List<Article> ListeArticles = SQLiteDAO.Instance.GetAll_Article_From_SousFamille(SousFamille_Obj);
+            ConnectArticles();
         }
     }
 }
