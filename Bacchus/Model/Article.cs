@@ -8,10 +8,22 @@ namespace Bacchus.Model
 {
     class Article
     {
+        /// <summary>
+        /// Constructeur par défaut
+        /// </summary>
         public Article()
         {
         }
 
+        /// <summary>
+        /// Constructeur de confort
+        /// </summary>
+        /// <param name="refArticle"></param>
+        /// <param name="description"></param>
+        /// <param name="refSousFamille"></param>
+        /// <param name="refMarque"></param>
+        /// <param name="prixHT"></param>
+        /// <param name="quantite"></param>
         public Article(string refArticle, string description, int refSousFamille, int refMarque, float prixHT, int quantite)
         {
             RefArticle = refArticle;
@@ -21,7 +33,7 @@ namespace Bacchus.Model
             PrixHT = prixHT;
             Quantite = quantite;
         }
-
+        //GETTERS ET SETTERS
         public string RefArticle { get; set; }
         public string Description { get; set; }
         public int RefSousFamille { get; set; }

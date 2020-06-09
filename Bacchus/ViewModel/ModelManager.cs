@@ -25,7 +25,9 @@ namespace Bacchus.ViewModel
             ListeArticles = SQLiteDAO_Obj.GetAll_Article();
             ConnectArticles();
         }
-
+        /// <summary>
+        /// Remplir les listes de sous famille des familles
+        /// </summary>
         private void ConnectFamille()
         {
             foreach (Famille Famille_Obj in ListeFamilles)
@@ -40,7 +42,9 @@ namespace Bacchus.ViewModel
                 }
             }
         }
-
+        /// <summary>
+        /// Remplir les listes d'articles des sous familles
+        /// </summary>
         private void ConnectArticles()
         {
             foreach (Article Article_Obj in ListeArticles)
@@ -64,6 +68,10 @@ namespace Bacchus.ViewModel
             }
         }
 
+        /// <summary>
+        /// Charger tout les articles d'une marque dans la liste d'articles de ModelManager
+        /// </summary>
+        /// <param name="Marque_Obj"></param>
         public void LoadArticleFromSource(Marque Marque_Obj)
         {
             List<Article> ListeArticles = SQLiteDAO.Instance.GetAll_Article_From_Marque(Marque_Obj);
@@ -71,6 +79,10 @@ namespace Bacchus.ViewModel
            
         }
 
+        /// <summary>
+        /// Charger tout les articles d'une sous famille dans la liste d'articles de ModelManager
+        /// </summary>
+        /// <param name="SousFamille_Obj">L'instance de la sous famille</param>
         public void LoadArticleFromSource(SousFamille SousFamille_Obj)
         {
             List<Article> ListeArticles = SQLiteDAO.Instance.GetAll_Article_From_SousFamille(SousFamille_Obj);
