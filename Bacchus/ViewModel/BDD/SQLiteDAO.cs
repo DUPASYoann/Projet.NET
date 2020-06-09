@@ -73,6 +73,9 @@ namespace Bacchus.BDD
             }
         }
 
+        /// <summary>
+        /// Permet de vider la BDD (vider toute les tables)
+        /// </summary>
         public void Empty_DB()
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
@@ -91,7 +94,10 @@ namespace Bacchus.BDD
                 }
             }
         }
-
+        /// <summary>
+        /// Exporter les données de l'application en un fichier CSV
+        /// </summary>
+        /// <param name="CSV_Path">Le chemin ou enregistrer le csv</param>
         public void Export_To_Csv(String CSV_Path)
         {
             String Description;
@@ -154,6 +160,10 @@ namespace Bacchus.BDD
             }
         }
 
+        /// <summary>
+        /// Inserer les données dans l'application depuis un fichier CSV
+        /// </summary>
+        /// <param name="CSV_Path">Le chemin de l'emplacement du fichier CSV</param>
         public void Insert_From_Csv(String CSV_Path)
         {
             this.Value_priv = 0;
@@ -210,6 +220,15 @@ namespace Bacchus.BDD
             }
         }
 
+        /// <summary>
+        /// Inserer les données dans la BDD depuis une ligne de CSV liée à un article
+        /// </summary>
+        /// <param name="Description">Description de l'article</param>
+        /// <param name="Ref_Article">Reference de l'article</param>
+        /// <param name="Marque">Marque de l'article</param>
+        /// <param name="Famille">Famille de l'article</param>
+        /// <param name="SousFamille">Sous famille de l'article et contenu dans la famille</param>
+        /// <param name="Prix">Prix HT de l'article</param>
         public void Insert_Row_From_CSV(String Description, String Ref_Article, String Marque, String Famille, String SousFamille, String Prix)
         {
             Article Article_obj = new Article
@@ -250,13 +269,16 @@ namespace Bacchus.BDD
 
         }
 
+        /// <summary>
+        /// Insérer un article dans la BDD
+        /// </summary>
+        /// <param name="Article_obj">Une instance de l'article à insérer</param>
         public void Insert_Article(Article Article_obj)
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
             {
                 try
                 {
-
                     My_Connection.Open();
                     using (SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(My_Connection))
                     {
@@ -282,6 +304,10 @@ namespace Bacchus.BDD
             }
         }
 
+        /// <summary>
+        /// Insérer une famille dans la BDD
+        /// </summary>
+        /// <param name="Famille_obj">Une instance la famille à insérer</param>
         public void Insert_Famille(Famille Famille_obj)
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
@@ -303,6 +329,10 @@ namespace Bacchus.BDD
             }
         }
 
+        /// <summary>
+        /// Insérer une marque dans la BDD
+        /// </summary>
+        /// <param name="Marque_obj">Une instance de la marque à insérer</param>
         public void Insert_Marque(Marque Marque_obj)
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
@@ -324,6 +354,10 @@ namespace Bacchus.BDD
             }
         }
 
+        /// <summary>
+        /// Insérer unes sous famille dans la BDD
+        /// </summary>
+        /// <param name="SousFamille_obj">Une instance de la sous famille à insérer</param>
         public void Insert_SousFamille(SousFamille SousFamille_obj)
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
@@ -346,6 +380,11 @@ namespace Bacchus.BDD
 
             }        }
 
+        /// <summary>
+        /// Trouver un article à partir de sa référence
+        /// </summary>
+        /// <param name="Ref">La référence de l'article</param>
+        /// <returns>L'article possèdant la référence</returns>
         public Article Search_Article_From_Ref(String Ref)
         {
             Article Resultat = new Article
@@ -401,6 +440,11 @@ namespace Bacchus.BDD
             return Resultat;
         }
 
+        /// <summary>
+        /// Trouver la sous famille à partir de son nom
+        /// </summary>
+        /// <param name="Name">Le nom de la sous famille</param>
+        /// <returns>La sous famille portant le nom</returns>
         public SousFamille Search_SousFamille_From_Name(String Name)
         {
             SousFamille Resultat = new SousFamille();
@@ -450,6 +494,11 @@ namespace Bacchus.BDD
             return Resultat;
         }
 
+        /// <summary>
+        /// Trouver la famille à partir de son nom
+        /// </summary>
+        /// <param name="Name">Le nom de la famille</param>
+        /// <returns>La famille associée au nom</returns>
         public Famille Search_Famille_From_Name(String Name)
         {
             Famille Resultat = new Famille();
@@ -498,6 +547,11 @@ namespace Bacchus.BDD
             return Resultat;
         }
 
+        /// <summary>
+        /// Trouver la marque à partir de son nom
+        /// </summary>
+        /// <param name="Name">Le nom de la marque</param>
+        /// <returns>La marque associée au nom</returns>
         public Marque Search_Marque_From_Name(String Name)
         {
             Marque Resultat = new Marque();
@@ -545,6 +599,10 @@ namespace Bacchus.BDD
             return Resultat;
         }
         
+        /// <summary>
+        /// Obtenir tout les articles de la BDD
+        /// </summary>
+        /// <returns>tout les articles</returns>
         public List<Article> GetAll_Article()
         {
             List<Article> Resultat = new List<Article>();
@@ -599,6 +657,10 @@ namespace Bacchus.BDD
             return Resultat;
         }
 
+        /// <summary>
+        /// Obtenir toute les familles de la BDD
+        /// </summary>
+        /// <returns>Toute les familles</returns>
         public List<Famille> GetAll_Famille()
         {
 
@@ -644,7 +706,10 @@ namespace Bacchus.BDD
             return Resultat;
 
         }
-        
+        /// <summary>
+        /// Obtenir toute les sous familles de la BDD
+        /// </summary>
+        /// <returns>Toute les sous familles</returns>
         public List<SousFamille> GetAll_SousFamille()
         {
 
@@ -692,6 +757,10 @@ namespace Bacchus.BDD
 
         }
 
+        /// <summary>
+        /// Obtenir toute les marques de la BDD
+        /// </summary>
+        /// <returns>Toute les marques</returns>
         public List<Marque> GetAll_Marque()
         {
 
@@ -738,6 +807,11 @@ namespace Bacchus.BDD
 
         }
 
+        /// <summary>
+        /// Obtenir tout les articles d'une sous famille
+        /// </summary>
+        /// <param name="SousFamille_Obj">Une instance de la sous famille</param>
+        /// <returns>les articles de la sous famille</returns>
         public List<Article> GetAll_Article_From_SousFamille(SousFamille SousFamille_Obj)
         {
             List<Article> Resultat = new List<Article>();
@@ -787,6 +861,11 @@ namespace Bacchus.BDD
             return Resultat;
         }
 
+        /// <summary>
+        /// Obtenir tout les articles d'une marque
+        /// </summary>
+        /// <param name="Marque_Obj">Une instance de la marque</param>
+        /// <returns>Tout les articles de la marque</returns>
         public List<Article> GetAll_Article_From_Marque(Marque Marque_Obj)
         {
             List<Article> Resultat = new List<Article>();
@@ -835,7 +914,10 @@ namespace Bacchus.BDD
 
             return Resultat;
         }
-
+        /// <summary>
+        /// Modifier un article
+        /// </summary>
+        /// <param name="Article_obj">Une instance de l'article à modifier</param>
         public void Update_Article(Article Article_obj)
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
@@ -863,7 +945,10 @@ namespace Bacchus.BDD
                 }
             }
         }
-
+        /// <summary>
+        /// Modifier une sous famille
+        /// </summary>
+        /// <param name="SousFamille_obj">Une instance de la sous famille</param>
         public void Update_SousFamille(SousFamille SousFamille_obj)
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
@@ -889,7 +974,10 @@ namespace Bacchus.BDD
                 }
             }
         }
-
+        /// <summary>
+        /// Modifier une famille
+        /// </summary>
+        /// <param name="Famille_obj">Une instance de la famille à modifier</param>
         public void Update_Famille(Famille Famille_obj)
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
@@ -914,7 +1002,10 @@ namespace Bacchus.BDD
                 }
             }
         }
-
+        /// <summary>
+        /// Supprimer une famille
+        /// </summary>
+        /// <param name="Famille_obj">Une instance de la famille à supprimer</param>
         public void Delete_Famille(Famille Famille_obj)
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
@@ -938,7 +1029,10 @@ namespace Bacchus.BDD
                 }
             }
         }
-
+        /// <summary>
+        /// Supprimer une article
+        /// </summary>
+        /// <param name="Article_obj">Une instance de l'article à supprimer</param>
         public void Delete_Article(Article Article_obj)
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
@@ -962,6 +1056,10 @@ namespace Bacchus.BDD
                 }
             }
         }
+        /// <summary>
+        /// Supprimer une sous famille
+        /// </summary>
+        /// <param name="SousFamille_obj">Une instance de la sous famille</param>
         public void Delete_SousFamille(SousFamille SousFamille_obj)
         {
             using (SQLiteConnection My_Connection = new SQLiteConnection(Connection_String))
