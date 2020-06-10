@@ -18,7 +18,7 @@ namespace Bacchus
 {
     public partial class FormMain : Form
     {
-        private ModelManager ModelManager_obj;
+        private ModelManager ModelManager_Obj;
         private List<ListViewGroup> ListViewGroupDescription = new List<ListViewGroup>();
         private List<ListViewGroup> ListViewGroupFamille;
         private List<ListViewGroup> ListViewGroupSousFamille;
@@ -27,7 +27,7 @@ namespace Bacchus
 
         public FormMain()
         {
-            ModelManager_obj = new ModelManager();
+            ModelManager_Obj = new ModelManager();
             InitializeComponent();
             LoadTreeView();
             LoadListViewGroupDescription();
@@ -65,10 +65,10 @@ namespace Bacchus
 
         private void LoadTreeView()
         {
-            this.treeView1.Nodes[0].Tag = ModelManager_obj.ListeArticles;
+            this.treeView1.Nodes[0].Tag = ModelManager_Obj.ListeArticles;
 
-            this.treeView1.Nodes[1].Tag = ModelManager_obj.ListeFamilles;
-            foreach (Famille Famille_Obj in ModelManager_obj.ListeFamilles)
+            this.treeView1.Nodes[1].Tag = ModelManager_Obj.ListeFamilles;
+            foreach (Famille Famille_Obj in ModelManager_Obj.ListeFamilles)
             {
                 TreeNode CurrentNode = this.treeView1.Nodes[1].Nodes.Add(Famille_Obj.Nom);
                 CurrentNode.Tag = Famille_Obj.ListesSousFamille;
@@ -78,8 +78,8 @@ namespace Bacchus
                 }
             }
 
-            this.treeView1.Nodes[2].Tag = ModelManager_obj.ListeMarques;
-            foreach (Marque Marque_Obj in ModelManager_obj.ListeMarques)
+            this.treeView1.Nodes[2].Tag = ModelManager_Obj.ListeMarques;
+            foreach (Marque Marque_Obj in ModelManager_Obj.ListeMarques)
             {   
                 this.treeView1.Nodes[2].Nodes.Add(Marque_Obj.Nom).Tag = Marque_Obj.ListeArticle;
             }
@@ -290,7 +290,7 @@ namespace Bacchus
         {
             ListViewGroupFamille = new List<ListViewGroup>();
 
-            foreach (Famille Famille_Obj in ModelManager_obj.ListeFamilles)
+            foreach (Famille Famille_Obj in ModelManager_Obj.ListeFamilles)
             {
                 ListViewGroupFamille.Add(new ListViewGroup(Famille_Obj.Nom, Famille_Obj.Nom));
             }
@@ -300,7 +300,7 @@ namespace Bacchus
         {
             ListViewGroupSousFamille = new List<ListViewGroup>();
 
-            foreach (SousFamille SousFamille_Obj in ModelManager_obj.ListeSousFamilles)
+            foreach (SousFamille SousFamille_Obj in ModelManager_Obj.ListeSousFamilles)
             {
                 ListViewGroupSousFamille.Add(new ListViewGroup(SousFamille_Obj.Nom, SousFamille_Obj.Nom));
             }
@@ -310,7 +310,7 @@ namespace Bacchus
         {
             ListViewGroupMarque = new List<ListViewGroup>();
 
-            foreach (Marque Marque_Obj in ModelManager_obj.ListeMarques)
+            foreach (Marque Marque_Obj in ModelManager_Obj.ListeMarques)
             {
                 ListViewGroupMarque.Add(new ListViewGroup(Marque_Obj.Nom, Marque_Obj.Nom));
             }
@@ -394,30 +394,29 @@ namespace Bacchus
 
         private void actualiserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ModelManager_obj.Refresh();
+            ModelManager_Obj.Refresh();
             LoadTreeView();
             treeView1_AfterSelect(null,null);
         }
 
         private void ajouterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormArticle FormArticler_Obj = new FormArticle((Article)this.listView1.SelectedItems[0].Tag,ModelManager_obj);
+            Article Article_Obj = new Article();
+            FormArticle FormArticler_Obj = new FormArticle(Article_Obj,ModelManager_Obj,"Ajouter");
             FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
             FormArticler_Obj.ShowDialog(this);
         }
 
         private void modifierToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormArticle FormArticler_Obj = new FormArticle((Article)this.listView1.SelectedItems[0].Tag, ModelManager_obj);
+            FormArticle FormArticler_Obj = new FormArticle((Article)this.listView1.SelectedItems[0].Tag, ModelManager_Obj,"Modifier");
             FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
             FormArticler_Obj.ShowDialog(this);
         }
 
         private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormArticle FormArticler_Obj = new FormArticle((Article)this.listView1.SelectedItems[0].Tag, ModelManager_obj);
-            FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
-            FormArticler_Obj.ShowDialog(this);
+
         }
 
         private void contextMenuStrip1_Opened(object sender, EventArgs e)
