@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bacchus.Model
 {
-    class Famille
+    public class Famille
     {
         public Famille()
         {

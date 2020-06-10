@@ -1,5 +1,6 @@
 ﻿using Bacchus.BDD;
 using Bacchus.Model;
+using Bacchus.View;
 using Bacchus.ViewModel;
 using System;
 using System.Collections;
@@ -128,7 +129,9 @@ namespace Bacchus
                 List<ListViewItem> List = new List<ListViewItem>();
                 foreach (Famille FamilleItem in (List<Famille>)Tag)
                 {
-                    List.Add(new ListViewItem(FamilleItem.Nom.ToString()));
+                    ListViewItem ListViewItem_Obj = new ListViewItem(FamilleItem.Nom.ToString());
+                    ListViewItem_Obj.Tag = FamilleItem;
+                    List.Add(ListViewItem_Obj);
                 }
                 LoadListViewFamille(List);
                 this.listView1.EndUpdate();
@@ -140,7 +143,9 @@ namespace Bacchus
                 List<ListViewItem> List = new List<ListViewItem>();
                 foreach (Marque FamilleItem in (List<Marque>)Tag)
                 {
-                    List.Add(new ListViewItem(FamilleItem.Nom.ToString()));
+                    ListViewItem ListViewItem_Obj = new ListViewItem(FamilleItem.Nom.ToString());
+                    ListViewItem_Obj.Tag = FamilleItem;
+                    List.Add(ListViewItem_Obj);
                 }
                 LoadListViewFamille(List);
                 this.listView1.EndUpdate();
@@ -152,7 +157,9 @@ namespace Bacchus
                 List<ListViewItem> List = new List<ListViewItem>();
                 foreach (SousFamille FamilleItem in (List<SousFamille>)Tag)
                 {
-                    List.Add(new ListViewItem(FamilleItem.Nom.ToString()));
+                    ListViewItem ListViewItem_Obj = new ListViewItem(FamilleItem.Nom.ToString());
+                    ListViewItem_Obj.Tag = FamilleItem;
+                    List.Add(ListViewItem_Obj);
                 }
                 LoadListViewFamille(List);
                 this.listView1.EndUpdate();
@@ -170,6 +177,7 @@ namespace Bacchus
                     ListItem.SubItems.Add(FamilleItem.SousFamille_Obj.Nom);
                     ListItem.SubItems.Add(FamilleItem.Marque_Obj.Nom);
                     ListItem.SubItems.Add(FamilleItem.Quantite.ToString());
+                    ListItem.Tag = FamilleItem;
 
                     List.Add(ListItem);
                 }
@@ -206,22 +214,26 @@ namespace Bacchus
             {
                 case 0:
                     CurrentListViewGroup = ListViewGroupDescription;
+                    this.listView1.ListViewItemSorter = new ListViewItemComparer(e.Column);
                     break;
 
                 case 1:
                     CurrentListViewGroup = ListViewGroupFamille;
+                    this.listView1.ListViewItemSorter = new ListViewItemComparer(e.Column);
                     break;
 
                 case 2:
                     CurrentListViewGroup = ListViewGroupSousFamille;
+                    this.listView1.ListViewItemSorter = new ListViewItemComparer(e.Column);
                     break;
 
                 case 3:
                     CurrentListViewGroup = ListViewGroupMarque;
+                    this.listView1.ListViewItemSorter = new ListViewItemComparer(e.Column);
                     break;
 
                 default:
-
+                    this.listView1.ListViewItemSorter = null;
                     break;
             }
 
@@ -230,11 +242,14 @@ namespace Bacchus
             this.listView1.Sort();
 
             this.listView1.Groups.Clear();
-            this.listView1.ListViewItemSorter = new ListViewItemComparer(e.Column);
-            ListViewGroup[] groups = new ListViewGroup[CurrentListViewGroup.Count];
-            CurrentListViewGroup.CopyTo(groups, 0);
-            Array.Sort(groups, new GroupComparer());
-            this.listView1.Groups.AddRange(groups);
+            
+            if (CurrentListViewGroup != null) {
+                ListViewGroup[] groups = new ListViewGroup[CurrentListViewGroup.Count];
+                CurrentListViewGroup.CopyTo(groups, 0);
+                Array.Sort(groups, new GroupComparer());
+                if (listView1.Sorting == SortOrder.Descending) Array.Reverse(groups);
+                this.listView1.Groups.AddRange(groups);
+            }
 
             treeView1_AfterSelect(null, null);
         }
@@ -375,6 +390,40 @@ namespace Bacchus
             {
                 return ((ListViewGroup)objA).Header.CompareTo(((ListViewGroup)objB).Header);
             }
+        }
+
+        private void actualiserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModelManager_obj.Refresh();
+            LoadTreeView();
+            treeView1_AfterSelect(null,null);
+        }
+
+        private void ajouterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormArticle FormArticler_Obj = new FormArticle((Article)this.listView1.SelectedItems[0].Tag,ModelManager_obj);
+            FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
+            FormArticler_Obj.ShowDialog(this);
+        }
+
+        private void modifierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormArticle FormArticler_Obj = new FormArticle((Article)this.listView1.SelectedItems[0].Tag, ModelManager_obj);
+            FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
+            FormArticler_Obj.ShowDialog(this);
+        }
+
+        private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormArticle FormArticler_Obj = new FormArticle((Article)this.listView1.SelectedItems[0].Tag, ModelManager_obj);
+            FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
+            FormArticler_Obj.ShowDialog(this);
+        }
+
+        private void contextMenuStrip1_Opened(object sender, EventArgs e)
+        {
+            this.contextMenuStrip1.Items[1].Enabled = (this.listView1.SelectedItems.Count != 0)? true : false;
+            this.contextMenuStrip1.Items[2].Enabled = (this.listView1.SelectedItems.Count != 0)? true : false;
         }
     }
 }

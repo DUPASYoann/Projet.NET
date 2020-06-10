@@ -1,4 +1,5 @@
 ﻿using Bacchus.BDD;
+using Bacchus.Model;
 using System;
 using System.Windows.Forms;
 

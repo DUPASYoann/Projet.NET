@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bacchus.ViewModel
 {
-    class ModelManager
+    public class ModelManager
     {
         public List<Article> ListeArticles { get; set; }
         public List<Famille> ListeFamilles { get; set; }
@@ -17,13 +17,7 @@ namespace Bacchus.ViewModel
 
         public ModelManager()
         {
-            SQLiteDAO SQLiteDAO_Obj = SQLiteDAO.Instance;
-            ListeFamilles = SQLiteDAO_Obj.GetAll_Famille();
-            ListeSousFamilles = SQLiteDAO_Obj.GetAll_SousFamille();
-            ConnectFamille();
-            ListeMarques = SQLiteDAO_Obj.GetAll_Marque();
-            ListeArticles = SQLiteDAO_Obj.GetAll_Article();
-            ConnectArticles();
+            Refresh();
         }
 
         private void ConnectFamille()
@@ -74,6 +68,17 @@ namespace Bacchus.ViewModel
         public void LoadArticleFromSource(SousFamille SousFamille_Obj)
         {
             List<Article> ListeArticles = SQLiteDAO.Instance.GetAll_Article_From_SousFamille(SousFamille_Obj);
+            ConnectArticles();
+        }
+
+        public void Refresh()
+        {
+            SQLiteDAO SQLiteDAO_Obj = SQLiteDAO.Instance;
+            ListeFamilles = SQLiteDAO_Obj.GetAll_Famille();
+            ListeSousFamilles = SQLiteDAO_Obj.GetAll_SousFamille();
+            ConnectFamille();
+            ListeMarques = SQLiteDAO_Obj.GetAll_Marque();
+            ListeArticles = SQLiteDAO_Obj.GetAll_Article();
             ConnectArticles();
         }
     }

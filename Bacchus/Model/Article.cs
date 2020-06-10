@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bacchus.Model
 {
-    class Article
+    public class Article
     {
         public Article()
         {
@@ -30,6 +30,15 @@ namespace Bacchus.Model
         public int Quantite { get; set; }
         public SousFamille SousFamille_Obj { get; set; }
         public Marque Marque_Obj { get; set; }
+
+        private Famille Famille_ObjPrivate;
+
+        public Famille Famille_Obj
+        {
+            get { return SousFamille_Obj.Famille_Obj; }
+            private set { Famille_ObjPrivate = value; }
+        }
+
 
     }
 }
