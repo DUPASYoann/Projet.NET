@@ -103,7 +103,7 @@
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.articleBindingSource, "RefArticle", true, System.Windows.Forms.DataSourceUpdateMode.Never));
+            this.textBox1.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.articleBindingSource, "RefArticle", true));
             this.textBox1.Location = new System.Drawing.Point(88, 13);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(194, 20);
