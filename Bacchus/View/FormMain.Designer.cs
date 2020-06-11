@@ -91,7 +91,7 @@
             this.actualiserToolStripMenuItem.Name = "actualiserToolStripMenuItem";
             this.actualiserToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.actualiserToolStripMenuItem.Text = "Actualiser";
-            this.actualiserToolStripMenuItem.Click += new System.EventHandler(this.actualiserToolStripMenuItem_Click);
+            this.actualiserToolStripMenuItem.Click += new System.EventHandler(this.ActualiserToolStripMenuItem_Click);
             // 
             // importerToolStripMenuItem
             // 

@@ -42,8 +42,7 @@ namespace Bacchus.Model
         public int Quantite { get; set; }
         public SousFamille SousFamille_Obj { get; set; }
         public Marque Marque_Obj { get; set; }
-        public Famille Famille_Obj => SousFamille_Obj.Famille_Obj; 
-        }
+        public Famille Famille_Obj => (SousFamille_Obj == null ?  null : SousFamille_Obj.Famille_Obj); 
 
 
     }

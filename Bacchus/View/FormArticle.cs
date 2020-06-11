@@ -1,4 +1,5 @@
-﻿using Bacchus.Model;
+﻿using Bacchus.BDD;
+using Bacchus.Model;
 using Bacchus.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -34,16 +35,21 @@ namespace Bacchus.View
             
             this.comboBox1.DataSource = this.listeFamillesBindingSource;
             this.comboBox1.DisplayMember = "Nom";
-            this.comboBox1.SelectedItem = Tag.Famille_Obj;
-
+            this.comboBox1.SelectedItem = (Tag.Famille_Obj == null) ? ModelManager_Obj.ListeFamilles[0] : Tag.Famille_Obj;
+            
             this.SousFamilleBinding.DataSource = ((Famille)this.comboBox1.SelectedItem).ListesSousFamille;
             this.comboBox2.DataSource = this.SousFamilleBinding;
             this.comboBox2.DisplayMember = "Nom";
-            this.comboBox2.SelectedItem = Tag.SousFamille_Obj;
+            this.comboBox2.SelectedItem = (Tag.SousFamille_Obj == null) ? ModelManager_Obj.ListeFamilles[0].ListesSousFamille[0] : Tag.SousFamille_Obj;
 
             this.comboBox3.DataSource = this.listeMarquesBindingSource;
             this.comboBox3.DisplayMember = "Nom";
-            this.comboBox3.SelectedItem = Tag.Marque_Obj;
+            this.comboBox3.SelectedItem = (Tag.Marque_Obj == null) ? ModelManager_Obj.ListeMarques[0] : Tag.Marque_Obj;
+
+            if (ButtonTexte == "Modifier")
+            {
+                this.textBox1.Enabled = false;
+            }
 
             Article_Obj = Tag;
         }
@@ -53,11 +59,13 @@ namespace Bacchus.View
             this.SousFamilleBinding.DataSource = ((Famille)this.comboBox1.SelectedItem).ListesSousFamille;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             //Verifier les données dans les champs
             //Si valide quitter la fenetre
             //Sinon mettre un message d'erreur via messagebox
+            SQLiteDAO.Instance.Update_Article(Article_Obj);
+            this.Close();
         }
     }
 }

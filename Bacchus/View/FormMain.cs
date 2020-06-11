@@ -392,7 +392,7 @@ namespace Bacchus
             }
         }
 
-        private void actualiserToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ActualiserToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ModelManager_Obj.Refresh();
             LoadTreeView();
@@ -405,6 +405,7 @@ namespace Bacchus
             FormArticle FormArticler_Obj = new FormArticle(Article_Obj,ModelManager_Obj,"Ajouter");
             FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
             FormArticler_Obj.ShowDialog(this);
+
         }
 
         private void modifierToolStripMenuItem_Click(object sender, EventArgs e)
@@ -412,6 +413,7 @@ namespace Bacchus
             FormArticle FormArticler_Obj = new FormArticle((Article)this.listView1.SelectedItems[0].Tag, ModelManager_Obj,"Modifier");
             FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
             FormArticler_Obj.ShowDialog(this);
+            ActualiserToolStripMenuItem_Click(null, null);
         }
 
         private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
