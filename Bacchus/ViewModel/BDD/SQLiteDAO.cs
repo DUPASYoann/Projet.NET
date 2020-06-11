@@ -932,6 +932,7 @@ namespace Bacchus.BDD
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Quantite", Article_obj.Quantite));
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefMarque", Article_obj.RefMarque));
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", Article_obj.RefSousFamille));
+                    SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefArticle", Article_obj.RefSousFamille));
 
                     SQLiteCommand_obj.ExecuteNonQuery();
                 }
