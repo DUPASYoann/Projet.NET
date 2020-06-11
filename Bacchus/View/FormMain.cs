@@ -36,6 +36,12 @@ namespace Bacchus
             LoadListViewGroupMarque();
         }
 
+        /// <summary>
+        /// Evenement appelant la fenêtre modale importer CSV 
+        /// lorsque nous cliquons sur importer dans le menu toolStrip
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ImporterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormImporter FormImporter_obj = new FormImporter();
@@ -43,6 +49,12 @@ namespace Bacchus
             FormImporter_obj.ShowDialog(this);
         }
 
+        /// <summary>
+        /// Evenement appelant la fenetre modale exporter lorsque 
+        /// nous cliquons sur exporter dans le menu toolStrip
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ExporterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog SaveFileDialog_obj = new SaveFileDialog())
@@ -63,6 +75,9 @@ namespace Bacchus
             }
         }
 
+        /// <summary>
+        /// Charge et met met à jour le treeView (partie de gauche)
+        /// </summary>
         private void LoadTreeView()
         {
             this.treeView1.Nodes[0].Tag = ModelManager_Obj.ListeArticles;
@@ -86,6 +101,10 @@ namespace Bacchus
          
         }
 
+        /// <summary>
+        /// Charge et met à jour la listView famille (partie de droite)
+        /// </summary>
+        /// <param name="List"></param>
         private void LoadListViewFamille(List<ListViewItem> List)
         {
 
@@ -101,9 +120,12 @@ namespace Bacchus
             this.listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
+        /// <summary>
+        /// Charge et met à jour la listView article (partie de droite)
+        /// </summary>
+        /// <param name="List"></param>
         private void LoadListViewArticle(List<ListViewItem> List)
         {
-
             this.listView1.Columns.Clear();
             this.listView1.Columns.Add("Description");
             this.listView1.Columns.Add("Familles");
@@ -119,6 +141,11 @@ namespace Bacchus
             this.listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
+        /// <summary>
+        /// Permet de charger les elements qui corresponde à l'élément selectionné
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             Object Tag = this.treeView1.SelectedNode.Tag;
@@ -186,7 +213,11 @@ namespace Bacchus
                 this.listView1.EndUpdate();
             }
         }
-
+        /// <summary>
+        /// Appelle les actions liées  au raccourci clavier ENTREE, F5 et SUPPR
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -208,6 +239,11 @@ namespace Bacchus
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListView1_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             switch (e.Column)
@@ -286,6 +322,9 @@ namespace Bacchus
 
         }
 
+        /// <summary>
+        /// Charge et met à jour la listView pour les groupes famille
+        /// </summary>
         private void LoadListViewGroupFamille()
         {
             ListViewGroupFamille = new List<ListViewGroup>();
@@ -295,7 +334,9 @@ namespace Bacchus
                 ListViewGroupFamille.Add(new ListViewGroup(Famille_Obj.Nom, Famille_Obj.Nom));
             }
         }
-
+        /// <summary>
+        /// Charge et met à jour la listView pour les groupes des sous familles
+        /// </summary>
         private void LoadListViewGroupSousFamille()
         {
             ListViewGroupSousFamille = new List<ListViewGroup>();
@@ -306,6 +347,9 @@ namespace Bacchus
             }
         }
 
+        /// <summary>
+        /// Charge et met à jour la listView pour les groupes des marques 
+        /// </summary>
         private void LoadListViewGroupMarque()
         {
             ListViewGroupMarque = new List<ListViewGroup>();
@@ -316,6 +360,11 @@ namespace Bacchus
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Article_Obj"></param>
+        /// <returns></returns>
         private ListViewGroup GetGroupFromCurrentListViewGroupArticle(Article Article_Obj)
         {
             ListViewGroup Result = null;
