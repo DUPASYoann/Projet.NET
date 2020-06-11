@@ -361,7 +361,7 @@ namespace Bacchus
         }
 
         /// <summary>
-        /// 
+        /// Obtenir le groupe depuis le groupe courant article
         /// </summary>
         /// <param name="Article_Obj"></param>
         /// <returns></returns>
@@ -440,14 +440,22 @@ namespace Bacchus
                 return ((ListViewGroup)objA).Header.CompareTo(((ListViewGroup)objB).Header);
             }
         }
-
+        /// <summary>
+        /// Evenement permettant d'actualiser les données lorsque l'on clique sur Actualiser dans le toolStrip
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ActualiserToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ModelManager_Obj.Refresh();
             LoadTreeView();
             TreeView1_AfterSelect(null,null);
         }
-
+        /// <summary>
+        /// Evenement appelant la fenetre modale d'ajout des objets Article, Famille, Sous Famille
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AjouterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.listView1.SelectedItems[0].Tag is Article)
@@ -460,7 +468,11 @@ namespace Bacchus
             }
 
         }
-
+        /// <summary>
+        ///  Evenement appelant la fenetre modale pour modifier des objets Article, Famille, Sous Famille
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ModifierToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.listView1.SelectedItems[0].Tag is Article)
@@ -472,7 +484,11 @@ namespace Bacchus
             }
 
         }
-
+        /// <summary>
+        ///  Evenement appelant la fenetre modale de supprimer des objets Article, Famille, Sous Famille
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SupprimerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.listView1.SelectedItems[0].Tag is Article)

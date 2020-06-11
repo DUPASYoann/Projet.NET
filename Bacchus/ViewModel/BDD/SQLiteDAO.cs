@@ -933,8 +933,8 @@ namespace Bacchus.BDD
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefMarque", Article_obj.RefMarque));
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefSousFamille", Article_obj.RefSousFamille));
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefArticle", Article_obj.RefSousFamille));
-
-                    SQLiteCommand_obj.ExecuteNonQuery();
+                    int nb = SQLiteCommand_obj.ExecuteNonQuery();
+                    MessageBox.Show("ERREUR DANS LA RECUPERATION DES ARTICLES DE LA MARQUE : " + nb);
                 }
                 catch (Exception e)
                 {
@@ -947,7 +947,7 @@ namespace Bacchus.BDD
             }
         }
         /// <summary>
-        /// Modifier une sous famille
+        /// Modifier une sous famille 
         /// </summary>
         /// <param name="SousFamille_obj">Une instance de la sous famille</param>
         public void Update_SousFamille(SousFamille SousFamille_obj)
