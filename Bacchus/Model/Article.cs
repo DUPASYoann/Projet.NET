@@ -40,8 +40,29 @@ namespace Bacchus.Model
         public int RefMarque { get; set; }
         public float PrixHT { get; set; }
         public int Quantite { get; set; }
-        public SousFamille SousFamille_Obj { get; set; }
-        public Marque Marque_Obj { get; set; }
+        private SousFamille SousFamille_Obj_Priv;
+
+        public SousFamille SousFamille_Obj
+        {
+            get { return SousFamille_Obj_Priv; }
+            set {
+                SousFamille_Obj_Priv = value;
+                RefSousFamille = SousFamille_Obj.RefSousFamille;
+            }
+        }
+
+        private Marque Marque_Obj_Priv;
+
+        public Marque Marque_Obj
+        {
+            get { return Marque_Obj_Priv; }
+            set
+            {
+                Marque_Obj_Priv = value;
+                RefMarque = Marque_Obj.RefMarque;
+            }
+        }
+
         public Famille Famille_Obj => (SousFamille_Obj == null ?  null : SousFamille_Obj.Famille_Obj); 
 
 

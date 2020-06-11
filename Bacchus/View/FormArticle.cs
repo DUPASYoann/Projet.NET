@@ -66,13 +66,16 @@ namespace Bacchus.View
 
         private void Button2_Click(object sender, EventArgs e)
         {
+            Article_Obj.SousFamille_Obj = (SousFamille) this.comboBox2.SelectedItem;
+            Article_Obj.Marque_Obj = (Marque)this.comboBox3.SelectedItem;
+
             if(this.Type == "Modifier")
             {
                 //REGEX
                 try
                 {
-                    Debug.Print(Article_Obj.Description);
-                    SQLiteDAO.Instance.Update_Article(Article_Obj);
+                    SQLiteDAO.Instance.Delete_Article(Article_Obj);
+                    SQLiteDAO.Instance.Insert_Article(Article_Obj);
                     this.Close();
                 }
                 catch (Exception Exception)
@@ -87,6 +90,7 @@ namespace Bacchus.View
             {
                 try
                 {
+                    Debug.Print(Article_Obj.RefArticle);
                     SQLiteDAO.Instance.Insert_Article(Article_Obj);
                     this.Close();
                 }

@@ -401,14 +401,11 @@ namespace Bacchus
 
         private void AjouterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.listView1.SelectedItems[0].Tag is Article)
-            {
-                Article Article_Obj = new Article();
-                FormArticle FormArticler_Obj = new FormArticle(Article_Obj, ModelManager_Obj, "Ajouter");
-                FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
-                FormArticler_Obj.ShowDialog(this);
-                ActualiserToolStripMenuItem_Click(null, null);
-            }
+            Article Article_Obj = new Article();
+            FormArticle FormArticler_Obj = new FormArticle(Article_Obj, ModelManager_Obj, "Ajouter");
+            FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
+            FormArticler_Obj.ShowDialog(this);
+            ActualiserToolStripMenuItem_Click(null, null);
 
         }
 
