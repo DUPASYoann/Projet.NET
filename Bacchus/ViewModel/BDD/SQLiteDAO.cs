@@ -925,7 +925,7 @@ namespace Bacchus.BDD
                 try
                 {
                     My_Connection.Open();
-                    String SQL_String = "UPDATE Articles SET Articles.Description = :Description, Articles.PrixHT = :PrixHT, Articles.Quantite = :Quantite, Articles.RefMarque = :RefMarque, Articles.RefSousFamille = :RefSousFamille WHERE Articles.RefArticle = :RefArticle";
+                    String SQL_String = "UPDATE Articles SET Description = :Description, PrixHT = :PrixHT, Quantite = :Quantite, RefMarque = :RefMarque, RefSousFamille = :RefSousFamille WHERE RefArticle = :RefArticle";
                     SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Description", Article_obj.Description));
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("PrixHT", Article_obj.PrixHT));
@@ -956,7 +956,7 @@ namespace Bacchus.BDD
                 try
                 {
                     My_Connection.Open();
-                    String SQL_String = "UPDATE SousFamilles SET SousFamilles.Nom = :Nom, SousFamilles.RefFamille = :RefFamille WHERE SousFamilles.RefSousFamille = :RefSousFamille";
+                    String SQL_String = "UPDATE SousFamilles SET Nom = :Nom, RefFamille = :RefFamille WHERE RefSousFamille = :RefSousFamille";
                     SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", SousFamille_obj.Nom));
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefFamille", SousFamille_obj.RefFamille));
@@ -985,7 +985,7 @@ namespace Bacchus.BDD
                 try
                 {
                     My_Connection.Open();
-                    String SQL_String = "UPDATE Familles SET Familles.Nom = :Nom WHERE Familles.RefFamille = :RefFamille";
+                    String SQL_String = "UPDATE Familles SET Nom = :Nom WHERE RefFamille = :RefFamille";
                     SQLiteCommand SQLiteCommand_obj = new SQLiteCommand(SQL_String, My_Connection);
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("Nom", Famille_obj.Nom));
                     SQLiteCommand_obj.Parameters.Add(new SQLiteParameter("RefFamille", Famille_obj.RefFamille));
