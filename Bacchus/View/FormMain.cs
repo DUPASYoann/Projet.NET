@@ -36,14 +36,14 @@ namespace Bacchus
             LoadListViewGroupMarque();
         }
 
-        private void importerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ImporterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormImporter FormImporter_obj = new FormImporter();
             FormImporter_obj.StartPosition = FormStartPosition.CenterParent;
             FormImporter_obj.ShowDialog(this);
         }
 
-        private void exporterToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExporterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog SaveFileDialog_obj = new SaveFileDialog())
             {
@@ -119,7 +119,7 @@ namespace Bacchus
             this.listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             Object Tag = this.treeView1.SelectedNode.Tag;
 
@@ -208,7 +208,7 @@ namespace Bacchus
             }
         }
 
-        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
+        private void ListView1_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             switch (e.Column)
             {
@@ -251,7 +251,7 @@ namespace Bacchus
                 this.listView1.Groups.AddRange(groups);
             }
 
-            treeView1_AfterSelect(null, null);
+            TreeView1_AfterSelect(null, null);
         }
 
         private void LoadListViewGroupDescription()
@@ -396,32 +396,50 @@ namespace Bacchus
         {
             ModelManager_Obj.Refresh();
             LoadTreeView();
-            treeView1_AfterSelect(null,null);
+            TreeView1_AfterSelect(null,null);
         }
 
-        private void ajouterToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AjouterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Article Article_Obj = new Article();
-            FormArticle FormArticler_Obj = new FormArticle(Article_Obj,ModelManager_Obj,"Ajouter");
-            FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
-            FormArticler_Obj.ShowDialog(this);
+            if (this.listView1.SelectedItems[0].Tag is Article)
+            {
+                Article Article_Obj = new Article();
+                FormArticle FormArticler_Obj = new FormArticle(Article_Obj, ModelManager_Obj, "Ajouter");
+                FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
+                FormArticler_Obj.ShowDialog(this);
+                ActualiserToolStripMenuItem_Click(null, null);
+            }
 
         }
 
-        private void modifierToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ModifierToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormArticle FormArticler_Obj = new FormArticle((Article)this.listView1.SelectedItems[0].Tag, ModelManager_Obj,"Modifier");
-            FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
-            FormArticler_Obj.ShowDialog(this);
-            ActualiserToolStripMenuItem_Click(null, null);
+            if (this.listView1.SelectedItems[0].Tag is Article)
+            {
+                FormArticle FormArticler_Obj = new FormArticle((Article)this.listView1.SelectedItems[0].Tag, ModelManager_Obj, "Modifier");
+                FormArticler_Obj.StartPosition = FormStartPosition.CenterParent;
+                FormArticler_Obj.ShowDialog(this);
+                ActualiserToolStripMenuItem_Click(null, null);
+            }
+
         }
 
-        private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SupprimerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (this.listView1.SelectedItems[0].Tag is Article)
+            {
+                DialogResult result = MessageBox.Show("Voulez-vous supprimer cette article", "Suppression", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    SQLiteDAO.Instance.Delete_Article((Article)this.listView1.SelectedItems[0].Tag);
+                    ModelManager_Obj.Refresh();
+                    ActualiserToolStripMenuItem_Click(null, null);
+                }
+            }
+            
         }
 
-        private void contextMenuStrip1_Opened(object sender, EventArgs e)
+        private void ContextMenuStrip1_Opened(object sender, EventArgs e)
         {
             this.contextMenuStrip1.Items[1].Enabled = (this.listView1.SelectedItems.Count != 0)? true : false;
             this.contextMenuStrip1.Items[2].Enabled = (this.listView1.SelectedItems.Count != 0)? true : false;
