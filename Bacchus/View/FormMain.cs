@@ -192,15 +192,15 @@ namespace Bacchus
             switch (e.KeyCode)
             {
                 case Keys.Enter:
-
+                    ModifierToolStripMenuItem_Click(null,null);
                     break;
 
                 case Keys.F5:
-
+                    ActualiserToolStripMenuItem_Click(null, null);
                     break;
 
                 case Keys.Delete:
-
+                    SupprimerToolStripMenuItem_Click(null, null);
                     break;
 
                 default:

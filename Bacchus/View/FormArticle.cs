@@ -71,7 +71,7 @@ namespace Bacchus.View
                 //REGEX
                 try
                 {
-                    Debug.Print(((Article)Tag).Description);
+                    Debug.Print(Article_Obj.Description);
                     SQLiteDAO.Instance.Update_Article(Article_Obj);
                     this.Close();
                 }
