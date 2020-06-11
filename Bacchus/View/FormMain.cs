@@ -35,35 +35,27 @@ namespace Bacchus
             LoadListViewGroupSousFamille();
             LoadListViewGroupMarque();
         }
-<<<<<<< HEAD
+
         /// <summary>
         /// Evenement appelant la fenêtre modale importer CSV 
         /// lorsque nous cliquons sur importer dans le menu toolStrip
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void importerToolStripMenuItem_Click(object sender, EventArgs e)
-=======
-
         private void ImporterToolStripMenuItem_Click(object sender, EventArgs e)
->>>>>>> 35d40fb230c4d9a152ab2f67719832fce2df31ad
         {
             FormImporter FormImporter_obj = new FormImporter();
             FormImporter_obj.StartPosition = FormStartPosition.CenterParent;
             FormImporter_obj.ShowDialog(this);
         }
 
-<<<<<<< HEAD
         /// <summary>
         /// Evenement appelant la fenetre modale exporter lorsque 
         /// nous cliquons sur exporter dans le menu toolStrip
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void exporterToolStripMenuItem_Click(object sender, EventArgs e)
-=======
         private void ExporterToolStripMenuItem_Click(object sender, EventArgs e)
->>>>>>> 35d40fb230c4d9a152ab2f67719832fce2df31ad
         {
             using (SaveFileDialog SaveFileDialog_obj = new SaveFileDialog())
             {
@@ -134,7 +126,6 @@ namespace Bacchus
         /// <param name="List"></param>
         private void LoadListViewArticle(List<ListViewItem> List)
         {
-
             this.listView1.Columns.Clear();
             this.listView1.Columns.Add("Description");
             this.listView1.Columns.Add("Familles");
@@ -150,16 +141,12 @@ namespace Bacchus
             this.listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
-<<<<<<< HEAD
         /// <summary>
         /// Permet de charger les elements qui corresponde à l'élément selectionné
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
-=======
         private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
->>>>>>> 35d40fb230c4d9a152ab2f67719832fce2df31ad
         {
             Object Tag = this.treeView1.SelectedNode.Tag;
 
@@ -252,16 +239,12 @@ namespace Bacchus
             }
         }
 
-<<<<<<< HEAD
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
-=======
         private void ListView1_ColumnClick(object sender, ColumnClickEventArgs e)
->>>>>>> 35d40fb230c4d9a152ab2f67719832fce2df31ad
         {
             switch (e.Column)
             {
