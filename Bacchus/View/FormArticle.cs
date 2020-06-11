@@ -16,6 +16,8 @@ namespace Bacchus.View
 {
     public partial class FormArticle : Form
     {
+        private String Type;
+
         public Article Article_Obj { get; set; }
 
         public FormArticle()
@@ -26,6 +28,9 @@ namespace Bacchus.View
         public FormArticle(Article Tag, ModelManager ModelManager_Obj, String ButtonTexte)
         {
             InitializeComponent();
+
+            this.Type = ButtonTexte;
+
             this.comboBox1.DataSource = null;
             this.comboBox2.DataSource = null;
             this.comboBox3.DataSource = null;
@@ -61,11 +66,37 @@ namespace Bacchus.View
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            //Verifier les données dans les champs
-            //Si valide quitter la fenetre
-            //Sinon mettre un message d'erreur via messagebox
-            SQLiteDAO.Instance.Update_Article(Article_Obj);
-            this.Close();
+            if(this.Type == "Modifier")
+            {
+                //REGEX
+                try
+                {
+                    Debug.Print(Article_Obj.Description);
+                    SQLiteDAO.Instance.Update_Article(Article_Obj);
+                    this.Close();
+                }
+                catch (Exception Exception)
+                {
+
+                    MessageBox.Show("IMPOSSIBLE DE MODIFIER L'ARTICLE : " + Exception.Message);
+                }
+
+            }
+
+            if (this.Type == "Ajouter")
+            {
+                try
+                {
+                    SQLiteDAO.Instance.Insert_Article(Article_Obj);
+                    this.Close();
+                }
+                catch (Exception Exception)
+                {
+                    MessageBox.Show("IMPOSSIBLE D'AJOUTER L'ARTICLE : " + Exception.Message);
+                }
+
+            }
+
         }
     }
 }
